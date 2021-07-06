@@ -44,7 +44,7 @@ class Admin extends React.Component {
     };
   }
   componentDidMount() {
-    document.body.classList.toggle("white-content");
+    document.body.classList.add("white-content");
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
@@ -55,7 +55,6 @@ class Admin extends React.Component {
       }
     }
     window.addEventListener("scroll", this.showNavbarButton);
-    document.body.classList.toggle("white-content");
   }
   componentWillUnmount() {
     if (navigator.platform.indexOf("Win") > -1) {

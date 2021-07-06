@@ -75,10 +75,6 @@ class Dashboard extends React.Component {
     };
   }
 
-  componentDidMount() {
-    document.body.classList.toggle("white-content");
-  }
-
   setBgChartData = name => {
     this.setState({
       bigChartData: name

@@ -63,16 +63,25 @@ const routes = [
         path: "/users",
         name: "Users",
         rtlName: "أشكال عادية",
-        mini: "RF",
+        mini: "U",
         rtlMini: "صو",
         component: RegularTables,
+        layout: "/admin"
+      },
+      {
+        path: "/create",
+        name: "Create User",
+        rtlName: "أشكال عادية",
+        mini: "C",
+        rtlMini: "صو",
+        component: RegularForms,
         layout: "/admin"
       },
       {
         path: "/roles",
         name: "Roles",
         rtlName: "نماذج موسعة",
-        mini: "EF",
+        mini: "R",
         rtlMini: "هوو",
         component: ExtendedForms,
         layout: "/admin"
