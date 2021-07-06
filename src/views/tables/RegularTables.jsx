@@ -37,65 +37,81 @@ class RegularTables extends React.Component {
                   <SortingTable
                     thead={[
                       { text: "Name" },
-                      { text: "Country" },
-                      { text: "City" },
-                      { className: "text-center", text: "Salary" }
+                      { text: "Email" },
+                      { text: "Head Office" },
+                      { text: "Zones" },
+                      { text: "Regions" },
+                      { text: "Stores" },
                     ]}
                     tbody={[
                       {
                         data: [
                           { text: "Dakota Rice" },
-                          { text: "Niger" },
-                          { text: "Oud-Turnhout" },
-                          { className: "text-center", text: "$36,738" }
+                          { text: "Niger@gmail.com" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Minerva Hooper" },
                           { text: "Curaçao" },
-                          { text: "Sinaai-Waas" },
-                          { className: "text-center", text: "$23,789" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Sage Rodriguez" },
                           { text: "Netherlands" },
-                          { text: "Baileux" },
-                          { className: "text-center", text: "$56,142" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Philip Chaney" },
                           { text: "Korea, South" },
-                          { text: "Overland Park" },
-                          { className: "text-center", text: "$38,735" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Doris Greene" },
                           { text: "Malawi" },
-                          { text: "Feldkirchen in Kärnten" },
-                          { className: "text-center", text: "$63,542" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Mason Porter" },
                           { text: "Chile" },
-                          { text: "Gloucester" },
-                          { className: "text-center", text: "$78,615" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       },
                       {
                         data: [
                           { text: "Jon Porter" },
                           { text: "Portugal" },
-                          { text: "Gloucester" },
-                          { className: "text-center", text: "$98,615" }
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
+                          { text: "1,2" },
                         ]
                       }
                     ]}
