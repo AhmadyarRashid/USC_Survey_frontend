@@ -32,6 +32,87 @@ import {
   Col, Alert
 } from "reactstrap";
 import ReactDatetime from "react-datetime";
+import Multiselect from 'multiselect-react-dropdown';
+
+const HeadOffice = [
+  {
+    cat: 'Group 1',
+    key: 'Head Office 1'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Head Office 2'
+  },
+];
+
+const zones = [
+  {
+    cat: 'Group 1',
+    key: 'Zone 1'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Zone 2'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Zone 3'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Zone 4'
+  },
+];
+
+const regions = [
+  {
+    cat: 'Group 1',
+    key: 'Region 1'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Region 2'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Region 3'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Region 4'
+  },
+];
+
+const options = [
+  {
+    cat: 'Group 1',
+    key: 'Option 1'
+  },
+  {
+    cat: 'Group 1',
+    key: 'Option 2'
+  },
+  {
+    cat: 'Group 1',
+    key: 'Option 3'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Option 4'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Option 5'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Option 6'
+  },
+  {
+    cat: 'Group 2',
+    key: 'Option 7'
+  }
+]
 
 class RegularForms extends React.Component {
   constructor(props) {
@@ -150,6 +231,62 @@ class RegularForms extends React.Component {
                             type="text"
                             autoComplete="off"
                             onChange={e => this.onInputChangeHandler("address", e.target.value)}
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Label sm="2">Head Office</Label>
+                      <Col sm="10">
+                        <FormGroup>
+                          <Multiselect
+                            displayValue="key"
+                            onRemove={function noRefCheck(){}}
+                            onSelect={function noRefCheck(){}}
+                            options={HeadOffice}
+                            showCheckbox
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Label sm="2">Zones</Label>
+                      <Col sm="10">
+                        <FormGroup>
+                          <Multiselect
+                            displayValue="key"
+                            onRemove={function noRefCheck(){}}
+                            onSelect={function noRefCheck(){}}
+                            options={zones}
+                            showCheckbox
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Label sm="2">Regions</Label>
+                      <Col sm="10">
+                        <FormGroup>
+                          <Multiselect
+                            displayValue="key"
+                            onRemove={function noRefCheck(){}}
+                            onSelect={function noRefCheck(){}}
+                            options={regions}
+                            showCheckbox
+                          />
+                        </FormGroup>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Label sm="2">Stores</Label>
+                      <Col sm="10">
+                        <FormGroup>
+                          <Multiselect
+                            displayValue="key"
+                            onRemove={function noRefCheck(){}}
+                            onSelect={function noRefCheck(){}}
+                            options={options}
+                            showCheckbox
                           />
                         </FormGroup>
                       </Col>
