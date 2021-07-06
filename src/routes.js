@@ -77,15 +77,6 @@ const routes = [
         component: RegularForms,
         layout: "/admin"
       },
-      {
-        path: "/roles",
-        name: "Roles",
-        rtlName: "نماذج موسعة",
-        mini: "R",
-        rtlMini: "هوو",
-        component: ExtendedForms,
-        layout: "/admin"
-      },
     ]
   },
 ];
