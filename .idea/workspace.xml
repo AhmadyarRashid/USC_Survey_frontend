@@ -12,12 +12,28 @@
   <component name="ChangeListManager">
     <list default="true" id="20a9d93c-564b-439e-b073-449fe15c1ee5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/FixedPlugin/FixedPlugin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/FixedPlugin/FixedPlugin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Footer/Footer.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Footer/Footer.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/Admin/Admin.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Admin/Admin.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/layouts/Auth/Auth.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/layouts/Auth/Auth.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/Dashboard.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/Dashboard.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/views/pages/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/pages/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -56,7 +72,8 @@
       <updated>1587760551982</updated>
       <workItem from="1587760554388" duration="889000" />
       <workItem from="1587802917640" duration="9000" />
-      <workItem from="1625508314453" duration="2664000" />
+      <workItem from="1625508314453" duration="3034000" />
+      <workItem from="1625584365478" duration="4168000" />
     </task>
     <servers />
   </component>
@@ -73,27 +90,32 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1771" height="318" key="GridCell.Tab.0.bottom" timestamp="1625508631412">
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom" timestamp="1625511527549">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1625508631412" />
-    <state width="1771" height="318" key="GridCell.Tab.0.center" timestamp="1625508631411">
+    <state width="1771" height="318" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1625511527549" />
+    <state width="1771" height="318" key="GridCell.Tab.0.center" timestamp="1625511527548">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1625508631411" />
-    <state width="1771" height="318" key="GridCell.Tab.0.left" timestamp="1625508631410">
+    <state width="1771" height="318" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1625511527548" />
+    <state width="1771" height="318" key="GridCell.Tab.0.left" timestamp="1625511527547">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1625508631410" />
-    <state width="1771" height="318" key="GridCell.Tab.0.right" timestamp="1625508631412">
+    <state width="1771" height="318" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1625511527547" />
+    <state width="1771" height="318" key="GridCell.Tab.0.right" timestamp="1625511527548">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1625508631412" />
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1625509444164">
+    <state width="1771" height="318" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1625511527548" />
+    <state x="561" y="265" key="run.anything.popup" timestamp="1625587869938">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625509444164" />
+    <state x="561" y="265" key="run.anything.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625587869938" />
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1625587027962">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625587027962" />
   </component>
 </project>

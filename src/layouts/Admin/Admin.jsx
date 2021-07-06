@@ -44,6 +44,7 @@ class Admin extends React.Component {
     };
   }
   componentDidMount() {
+    document.body.classList.toggle("white-content");
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";
       document.documentElement.classList.remove("perfect-scrollbar-off");
@@ -187,11 +188,11 @@ class Admin extends React.Component {
           {...this.props}
           routes={routes}
           activeColor={this.state.activeColor}
-          logo={{
-            outterLink: "https://www.creative-tim.com/",
-            text: "Creative Tim",
-            imgSrc: logo
-          }}
+          // logo={{
+          //   outterLink: "https://www.creative-tim.com/",
+          //   text: "Creative Tim",
+          //   imgSrc: logo
+          // }}
           closeSidebar={this.closeSidebar}
         />
         <div

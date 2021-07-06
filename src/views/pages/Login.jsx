@@ -30,17 +30,63 @@ import {
   InputGroupText,
   InputGroup,
   Container,
-  Col
+  Col,
+  Alert,
 } from "reactstrap";
 
 class Login extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      email: '',
+      password: '',
+      errorMsg: '',
+      isLoading: false,
+      hasError: false,
+    }
+  }
+
   componentDidMount() {
     document.body.classList.toggle("login-page");
   }
+
   componentWillUnmount() {
     document.body.classList.toggle("login-page");
   }
+
+  onInputChangeHandler = (key, value) => {
+    this.setState({
+      [key]: value
+    })
+  }
+
+  onFormSubmit = () => {
+    const {email, password} = this.state;
+    const {history} = this.props;
+    this.setState({
+      isLoading: true
+    })
+
+    setTimeout(() => {
+      if (email === 'admin@admin.com' && password === "admin") {
+        this.setState({
+          hasError: false,
+          isLoading: false,
+          errorMsg: ""
+        })
+        history.push("/admin/dashboard")
+      } else {
+        this.setState({
+          hasError: true,
+          isLoading: false,
+          errorMsg: "email and password are wrong"
+        })
+      }
+    }, 2000)
+  }
+
   render() {
+    const {isLoading, hasError, errorMsg, email, password} = this.state;
     return (
       <>
         <div className="content">
@@ -56,21 +102,30 @@ class Login extends React.Component {
                     <CardTitle tag="h1">Log in</CardTitle>
                   </CardHeader>
                   <CardBody>
+                    {hasError && <Alert color="danger">{errorMsg}</Alert>}
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
-                          <i className="tim-icons icon-email-85" />
+                          <i className="tim-icons icon-email-85"/>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Email" type="text" />
+                      <Input
+                        placeholder="Email"
+                        type="email"
+                        onChange={event => this.onInputChangeHandler("email", event.target.value)}
+                      />
                     </InputGroup>
                     <InputGroup>
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
-                          <i className="tim-icons icon-lock-circle" />
+                          <i className="tim-icons icon-lock-circle"/>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input placeholder="Password" type="text" />
+                      <Input
+                        placeholder="Password"
+                        type="password"
+                        onChange={event => this.onInputChangeHandler("password", event.target.value)}
+                      />
                     </InputGroup>
                   </CardBody>
                   <CardFooter>
@@ -79,33 +134,14 @@ class Login extends React.Component {
                       className="mb-3"
                       color="primary"
                       href="#pablo"
-                      onClick={e => e.preventDefault()}
+                      onClick={e => {
+                        e.preventDefault()
+                        this.onFormSubmit()
+                      }}
                       size="lg"
                     >
-                      Get Started
+                      {isLoading ? 'Loading...': 'Login'}
                     </Button>
-                    <div className="pull-left">
-                      <h6>
-                        <a
-                          className="link footer-link"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Create Account
-                        </a>
-                      </h6>
-                    </div>
-                    <div className="pull-right">
-                      <h6>
-                        <a
-                          className="link footer-link"
-                          href="#pablo"
-                          onClick={e => e.preventDefault()}
-                        >
-                          Need Help?
-                        </a>
-                      </h6>
-                    </div>
                   </CardFooter>
                 </Card>
               </Form>
