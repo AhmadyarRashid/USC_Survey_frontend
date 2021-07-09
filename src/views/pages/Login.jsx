@@ -33,6 +33,7 @@ import {
   Col,
   Alert,
 } from "reactstrap";
+import {loginApi} from "../../api/user"
 
 class Login extends React.Component {
   constructor(props) {
@@ -47,6 +48,7 @@ class Login extends React.Component {
   }
 
   componentDidMount() {
+    document.body.classList.add("white-content");
     document.body.classList.toggle("login-page");
   }
 
@@ -67,22 +69,46 @@ class Login extends React.Component {
       isLoading: true
     })
 
-    setTimeout(() => {
-      if (email === 'admin@admin.com' && password === "admin") {
-        this.setState({
-          hasError: false,
-          isLoading: false,
-          errorMsg: ""
-        })
-        history.push("/admin/dashboard")
-      } else {
-        this.setState({
-          hasError: true,
-          isLoading: false,
-          errorMsg: "email and password are wrong"
-        })
-      }
-    }, 2000)
+    loginApi(email, password)
+      .then(response => {
+        if (response.isSuccess) {
+          const { userId } = response.payload;
+          localStorage.setItem("token", userId)
+          this.setState({
+            hasError: false,
+            isLoading: false,
+            errorMsg: ""
+          })
+          history.push("/admin/dashboard")
+        } else {
+          this.setState({
+            hasError: true,
+            isLoading: false,
+            errorMsg: response.message
+          })
+        }
+        console.log("user login", response)
+      })
+      .catch(error => {
+        console.log("error")
+      })
+
+    // setTimeout(() => {
+    //   if (email === 'admin@admin.com' && password === "admin") {
+    //     this.setState({
+    //       hasError: false,
+    //       isLoading: false,
+    //       errorMsg: ""
+    //     })
+    //     history.push("/admin/dashboard")
+    //   } else {
+    //     this.setState({
+    //       hasError: true,
+    //       isLoading: false,
+    //       errorMsg: "email and password are wrong"
+    //     })
+    //   }
+    // }, 2000)
   }
 
   render() {
@@ -140,7 +166,7 @@ class Login extends React.Component {
                       }}
                       size="lg"
                     >
-                      {isLoading ? 'Loading...': 'Login'}
+                      {isLoading ? 'Loading...' : 'Login'}
                     </Button>
                   </CardFooter>
                 </Card>

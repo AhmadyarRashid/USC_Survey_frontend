@@ -44,6 +44,10 @@ class Admin extends React.Component {
     };
   }
   componentDidMount() {
+    const isLoggedIn = localStorage.getItem("token")
+    if (!isLoggedIn){
+      this.props.history.push("/auth/login");
+    }
     document.body.classList.add("white-content");
     if (navigator.platform.indexOf("Win") > -1) {
       document.documentElement.className += " perfect-scrollbar-on";

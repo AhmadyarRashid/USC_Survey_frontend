@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Redirect, Route, Router, Switch} from "react-router-dom";
 import AuthLayout from "./layouts/Auth/Auth";
 import AdminLayout from "./layouts/Admin/Admin";
@@ -8,13 +8,15 @@ import {createBrowserHistory} from "history";
 const hist = createBrowserHistory();
 
 function App(){
+  const isLoggedIn = localStorage.getItem("token")
+
   return(
     <Router history={hist}>
       <Switch>
         <Route path="/auth" render={props => <AuthLayout {...props} />} />
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
         <Route path="/rtl" render={props => <RTLLayout {...props} />} />
-        <Redirect from="/" to="/auth/login" />
+        <Redirect from="/" to={isLoggedIn ? "/admin/dashboard" : "/auth/login"} />
       </Switch>
     </Router>
   )

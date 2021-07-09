@@ -4,6 +4,7 @@
   "private": true,
   "homepage": ".",
   "dependencies": {
+    "axios": "^0.21.1",
     "chart.js": "2.7.3",
     "classnames": "2.2.6",
     "fsevents": "^2.3.2",
