@@ -6,10 +6,23 @@ export const loginApi = (email, password) => {
     axios.post(`${baseEndPointUrl}/user/login`, {
       email,
       password
-    }).then(response => {
-      resolve(response.data)
-    }).catch(error => {
-      reject(error)
-    })
+    }).then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const createUser = data => {
+  return new Promise((resolve, reject) => {
+    axios.post(`${baseEndPointUrl}/user/create`, data)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const getAllUsers = data => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/user/all`, data)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
   })
 }

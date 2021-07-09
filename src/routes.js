@@ -24,6 +24,7 @@ import Wizard from "views/forms/Wizard.jsx";
 import ValidationForms from "views/forms/ValidationForms.jsx";
 import ExtendedForms from "views/forms/ExtendedForms.jsx";
 import RegularForms from "views/forms/RegularForms.jsx";
+import CreateUserComponent from "views/forms/RegularForms.jsx";
 import Calendar from "views/Calendar.jsx";
 import Widgets from "views/Widgets.jsx";
 import Charts from "views/Charts.jsx";
@@ -74,7 +75,7 @@ const routes = [
         rtlName: "أشكال عادية",
         mini: "C",
         rtlMini: "صو",
-        component: RegularForms,
+        component: CreateUserComponent,
         layout: "/admin"
       },
     ]
