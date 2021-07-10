@@ -26,3 +26,11 @@ export const getAllUsers = data => {
       .catch(error => reject(error))
   })
 }
+
+export const deleteUser = id => {
+  return new Promise((resolve, reject) => {
+    axios.delete(`${baseEndPointUrl}/user/delete?id=${id}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}

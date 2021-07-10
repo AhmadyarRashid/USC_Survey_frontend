@@ -19,7 +19,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 
 // reactstrap components
-import { Table } from "reactstrap";
+import {Table, Button, ButtonGroup} from "reactstrap";
 
 class SortingTable extends React.Component {
   constructor(props) {
@@ -32,8 +32,9 @@ class SortingTable extends React.Component {
       }
     };
   }
+
   sortTable = key => {
-    let { bodyData, column } = this.state;
+    let {bodyData, column} = this.state;
     let order = "";
     if (
       (column.name === key && column.order === "desc") ||
@@ -65,62 +66,77 @@ class SortingTable extends React.Component {
       }
     });
   };
+
   render() {
-    const { bodyData, column } = this.state;
+    const {bodyData, column} = this.state;
+    const {deleteUserHandler} = this.props;
     return (
       <Table className="tablesorter" responsive>
         <thead className="text-primary">
-          <tr>
-            {this.props.thead.map((prop, key) => {
-              return (
-                <th
-                  className={classnames(
-                    "header",
-                    {
-                      headerSortDown:
-                        key === column.name && column.order === "asc"
-                    },
-                    {
-                      headerSortUp:
-                        key === column.name && column.order === "desc"
-                    },
-                    {
-                      [prop.className]: prop.className !== undefined
-                    }
-                  )}
-                  key={key}
-                  onClick={() => this.sortTable(key)}
-                >
-                  {prop.text}
-                </th>
-              );
-            })}
-          </tr>
-        </thead>
-        <tbody>
-          {bodyData.map((prop, key) => {
+        <tr>
+          {this.props.thead.map((prop, key) => {
             return (
-              <tr
-                className={classnames({
-                  [prop.className]: prop.className !== undefined
-                })}
+              <th
+                className={classnames(
+                  "header",
+                  {
+                    headerSortDown:
+                      key === column.name && column.order === "asc"
+                  },
+                  {
+                    headerSortUp:
+                      key === column.name && column.order === "desc"
+                  },
+                  {
+                    [prop.className]: prop.className !== undefined
+                  }
+                )}
                 key={key}
+                onClick={() => this.sortTable(key)}
               >
-                {prop.data.map((data, k) => {
-                  return (
-                    <td
-                      className={classnames({
-                        [data.className]: data.className !== undefined
-                      })}
-                      key={k}
-                    >
-                      {data.text}
-                    </td>
-                  );
-                })}
-              </tr>
+                {prop.text}
+              </th>
             );
           })}
+          <th/>
+        </tr>
+        </thead>
+        <tbody>
+        {bodyData.map((prop, key) => {
+          return (
+            <tr
+              className={classnames({
+                [prop.className]: prop.className !== undefined
+              })}
+              key={key}
+            >
+              {prop.data.map((data, k) => {
+                if (k > 5)
+                  return null
+                return (
+                  <td
+                    className={classnames({
+                      [data.className]: data.className !== undefined
+                    })}
+                    key={k}
+                  >
+                    {data.text}
+                  </td>
+                );
+              })}
+              <td>
+                {/*<Button size="sm" variant="warning">Edit</Button>*/}
+                <Button
+                  onClick={() => {
+                    deleteUserHandler(prop.data[6].text)
+                  }}
+                  size="sm"
+                  variant="danger"
+                >Delete</Button>
+              </td>
+            </tr>
+          );
+        })}
         </tbody>
       </Table>
     );

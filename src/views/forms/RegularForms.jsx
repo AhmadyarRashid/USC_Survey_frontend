@@ -247,7 +247,7 @@ class CreateUserComponent extends React.Component {
             this.setState({
               hasError: true,
               isLoading: false,
-              errorMsg: "Something went wrong"
+              errorMsg: response.message
             })
           }
         })

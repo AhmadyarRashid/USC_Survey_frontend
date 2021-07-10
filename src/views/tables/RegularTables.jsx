@@ -6,6 +6,7 @@ import {getAllUsers} from "../../api/user"
 
 // core components
 import SortingTable from "components/SortingTable/SortingTable.jsx";
+import {deleteUser} from "../../api/user"
 
 class RegularTables extends React.Component {
 
@@ -27,6 +28,17 @@ class RegularTables extends React.Component {
       })
   }
 
+  deleteUserHandler = userId => {
+    deleteUser(userId)
+      .then(response => {
+        if (response.isSuccess) {
+          this.setState(preState => ({
+            users: preState.users.filter(user => user.id !== userId)
+          }))
+        }
+      })
+  }
+
   render() {
     const {users} = this.state;
     const tableBodyData = users.map(user => ({
@@ -37,10 +49,9 @@ class RegularTables extends React.Component {
         {text: user.zoneIds},
         {text: user.regionIds},
         {text: user.storeIds},
+        {text: user.id},
       ]
     }))
-
-    console.log("data", tableBodyData)
     return (
       <>
         <div className="content">
@@ -52,6 +63,7 @@ class RegularTables extends React.Component {
                 </CardHeader>
                 <CardBody>
                   {users.length > 0 ? <SortingTable
+                    deleteUserHandler={this.deleteUserHandler}
                     thead={[
                       {text: "Name"},
                       {text: "phone No"},
@@ -61,7 +73,7 @@ class RegularTables extends React.Component {
                       {text: "Stores"},
                     ]}
                     tbody={tableBodyData}
-                  />: <h4 align="center">No User Available</h4>}
+                  /> : <h4 align="center">No User Available</h4>}
                 </CardBody>
               </Card>
             </Col>
