@@ -11,12 +11,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="20a9d93c-564b-439e-b073-449fe15c1ee5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/area.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/area.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/routes.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/routes.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/views/forms/RegularForms.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/forms/RegularForms.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/Navbars/AdminNavbar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Navbars/AdminNavbar.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/views/tables/RegularTables.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/views/tables/RegularTables.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -73,7 +69,9 @@
       <workItem from="1625584365478" duration="6191000" />
       <workItem from="1625594905030" duration="1527000" />
       <workItem from="1625758620663" duration="221000" />
-      <workItem from="1625854851150" duration="7584000" />
+      <workItem from="1625854851150" duration="7659000" />
+      <workItem from="1625921219484" duration="207000" />
+      <workItem from="1625931861945" duration="550000" />
     </task>
     <servers />
   </component>
@@ -117,9 +115,9 @@
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
     <state x="561" y="265" key="run.anything.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625587869938" />
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1625855427659">
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup" timestamp="1625937045372">
       <screen x="0" y="0" width="1792" height="1120" />
     </state>
-    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625855427659" />
+    <state x="561" y="251" width="670" height="676" key="search.everywhere.popup/0.0.1792.1120@0.0.1792.1120" timestamp="1625937045372" />
   </component>
 </project>

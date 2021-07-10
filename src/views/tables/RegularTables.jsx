@@ -16,7 +16,6 @@ class RegularTables extends React.Component {
     }
   }
 
-
   componentDidMount() {
     getAllUsers()
       .then(response => {
@@ -52,7 +51,7 @@ class RegularTables extends React.Component {
                   <CardTitle tag="h4">All Users</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  {users.length > 0 && <SortingTable
+                  {users.length > 0 ? <SortingTable
                     thead={[
                       {text: "Name"},
                       {text: "phone No"},
@@ -62,7 +61,7 @@ class RegularTables extends React.Component {
                       {text: "Stores"},
                     ]}
                     tbody={tableBodyData}
-                  />}
+                  />: <h4 align="center">No User Available</h4>}
                 </CardBody>
               </Card>
             </Col>
