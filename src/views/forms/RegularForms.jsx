@@ -213,14 +213,14 @@ class CreateUserComponent extends React.Component {
     const data = {
       name, address, phoneNo, email, password,
       confirmPassword: retypePassword,
-      headOfficeIds: selectedHeadOffices.toString(),
-      zoneIds: selectedZones.toString(),
-      regionIds: selectedRegions.toString(),
-      cityIds: selectedCities.toString(),
-      storeIds: selectedStores.map(item => item.id).toString()
+      headOfficeIds: !selectedHeadOffices? null: selectedHeadOffices.toString(),
+      zoneIds: !selectedZones? null: selectedZones.toString(),
+      regionIds: !selectedRegions? null: selectedRegions.toString(),
+      cityIds: !selectedCities? null: selectedCities.toString(),
+      storeIds: !selectedStores? null: selectedStores.map(item => item.id).toString()
     }
 
-    if (!name || !email || !password || !retypePassword || selectedStores.length === 0){
+    if (!name || !email || !password || !retypePassword){
       this.setState({
         hasError: true,
         isLoading: false,
