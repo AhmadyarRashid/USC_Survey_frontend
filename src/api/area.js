@@ -40,3 +40,35 @@ export const getStores = cityId => {
       .catch(error => reject(error))
   })
 }
+
+export const getUserReports = (userId = -1) => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/userReports/${userId}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const getRegionReports = (regionId = -1) => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/regionReports/${regionId}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const getAllRegion = () => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/getAllRegions`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const getAllUsers = () => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/getAllUsers`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}

@@ -43,6 +43,8 @@ import User from "views/pages/User.jsx";
 import Login from "views/pages/Login.jsx";
 import Rtl from "views/pages/Rtl.jsx";
 import Lock from "views/pages/Lock.jsx";
+import UserReportsPage from "./views/Reports/userReports";
+import RegionReportsPage from "./views/Reports/regionReports";
 
 const routes = [
   {
@@ -55,16 +57,43 @@ const routes = [
   },
   {
     collapse: true,
-    name: "User Management",
+    name: "Reports",
     rtlName: "إستمارات",
     icon: "tim-icons icon-notes",
-    state: "formsCollapse",
+    state: "reportsCollapse",
+    views: [
+      {
+        path: "/userReports",
+        name: "User Reports",
+        rtlName: "أشكال عادية",
+        mini: "User",
+        rtlMini: "صو",
+        component: UserReportsPage,
+        layout: "/admin"
+      },
+      {
+        path: "/regionReports",
+        name: "Region Reports",
+        rtlName: "أشكال عادية",
+        mini: "Region",
+        rtlMini: "صو",
+        component: RegionReportsPage,
+        layout: "/admin"
+      },
+    ]
+  },
+  {
+    collapse: true,
+    name: "User Management",
+    rtlName: "إستمارات",
+    icon: "tim-icons icon-single-02",
+    state: "userCollapse",
     views: [
       {
         path: "/users",
         name: "Users",
         rtlName: "أشكال عادية",
-        mini: "U",
+        mini: "all",
         rtlMini: "صو",
         component: RegularTables,
         layout: "/admin"
@@ -73,7 +102,7 @@ const routes = [
         path: "/create",
         name: "Create User",
         rtlName: "أشكال عادية",
-        mini: "C",
+        mini: "Create",
         rtlMini: "صو",
         component: CreateUserComponent,
         layout: "/admin"
