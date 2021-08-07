@@ -1,22 +1,4 @@
-/*!
-
-=========================================================
-* Black Dashboard PRO React - v1.0.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/black-dashboard-pro-react
-* Copyright 2019 Creative Tim (https://www.creative-tim.com)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
-
-// reactstrap components
 import {
   Button,
   Card,
@@ -33,6 +15,7 @@ import {
   Col,
   Alert,
 } from "reactstrap";
+import Logo from "../../assets/img/card-primary.png"
 import {loginApi} from "../../api/user"
 
 class Login extends React.Component {
@@ -53,7 +36,7 @@ class Login extends React.Component {
   }
 
   componentWillUnmount() {
-    document.body.classList.toggle("login-page");
+    // document.body.classList.toggle("login-page");
   }
 
   onInputChangeHandler = (key, value) => {
@@ -72,8 +55,9 @@ class Login extends React.Component {
     loginApi(email, password)
       .then(response => {
         if (response.isSuccess) {
-          const { userId } = response.payload;
+          const { userId, email } = response.payload;
           localStorage.setItem("token", userId)
+          localStorage.setItem("email", email)
           this.setState({
             hasError: false,
             isLoading: false,
@@ -92,27 +76,10 @@ class Login extends React.Component {
       .catch(error => {
         console.log("error")
       })
-
-    // setTimeout(() => {
-    //   if (email === 'admin@admin.com' && password === "admin") {
-    //     this.setState({
-    //       hasError: false,
-    //       isLoading: false,
-    //       errorMsg: ""
-    //     })
-    //     history.push("/admin/dashboard")
-    //   } else {
-    //     this.setState({
-    //       hasError: true,
-    //       isLoading: false,
-    //       errorMsg: "email and password are wrong"
-    //     })
-    //   }
-    // }, 2000)
   }
 
   render() {
-    const {isLoading, hasError, errorMsg, email, password} = this.state;
+    const {isLoading, hasError, errorMsg} = this.state;
     return (
       <>
         <div className="content">
@@ -120,12 +87,8 @@ class Login extends React.Component {
             <Col className="ml-auto mr-auto" lg="4" md="6">
               <Form className="form">
                 <Card className="card-login card-white">
-                  <CardHeader>
-                    <img
-                      alt="..."
-                      src={require("assets/img/card-primary.png")}
-                    />
-                    <CardTitle tag="h1">Log in</CardTitle>
+                  <CardHeader style={{padding: "40px 0px 40px 0px"}}>
+                    <CardTitle align="center" style={{color: "#ce51df"}} tag="h1">Log in</CardTitle>
                   </CardHeader>
                   <CardBody>
                     {hasError && <Alert color="danger">{errorMsg}</Alert>}

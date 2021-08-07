@@ -43,15 +43,25 @@ class AdminNavbar extends React.Component {
     this.state = {
       collapseOpen: false,
       modalSearch: false,
-      color: "navbar-transparent"
+      color: "navbar-transparent",
+      email: ''
     };
   }
-  componentDidMount() {
+
+  async componentDidMount() {
     window.addEventListener("resize", this.updateColor);
+    const email = await localStorage.getItem("email")
+    if (email) {
+      this.setState({
+        email
+      })
+    }
   }
+
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateColor);
   }
+
   // function that adds color white/transparent to the navbar on resize (this is for the collapse)
   updateColor = () => {
     if (window.innerWidth < 993 && this.state.collapseOpen) {
@@ -85,14 +95,16 @@ class AdminNavbar extends React.Component {
       modalSearch: !this.state.modalSearch
     });
   };
+
   render() {
     const {history} = this.props;
+    const {email} = this.state;
     return (
       <>
         <Navbar
           className={classNames("navbar-absolute", {
             [this.state.color]:
-              this.props.location.pathname.indexOf("full-screen-map") === -1
+            this.props.location.pathname.indexOf("full-screen-map") === -1
           })}
           expand="lg"
         >
@@ -105,8 +117,8 @@ class AdminNavbar extends React.Component {
                   id="tooltip209599"
                   onClick={this.props.handleMiniClick}
                 >
-                  <i className="tim-icons icon-align-center visible-on-sidebar-regular" />
-                  <i className="tim-icons icon-bullet-list-67 visible-on-sidebar-mini" />
+                  <i className="tim-icons icon-align-center visible-on-sidebar-regular"/>
+                  <i className="tim-icons icon-bullet-list-67 visible-on-sidebar-mini"/>
                 </Button>
                 <UncontrolledTooltip
                   delay={0}
@@ -126,9 +138,9 @@ class AdminNavbar extends React.Component {
                   type="button"
                   onClick={this.props.toggleSidebar}
                 >
-                  <span className="navbar-toggler-bar bar1" />
-                  <span className="navbar-toggler-bar bar2" />
-                  <span className="navbar-toggler-bar bar3" />
+                  <span className="navbar-toggler-bar bar1"/>
+                  <span className="navbar-toggler-bar bar2"/>
+                  <span className="navbar-toggler-bar bar3"/>
                 </button>
               </div>
               <NavbarBrand href="#pablo" onClick={e => e.preventDefault()}>
@@ -144,63 +156,12 @@ class AdminNavbar extends React.Component {
               aria-label="Toggle navigation"
               onClick={this.toggleCollapse}
             >
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
-              <span className="navbar-toggler-bar navbar-kebab" />
+              <span className="navbar-toggler-bar navbar-kebab"/>
+              <span className="navbar-toggler-bar navbar-kebab"/>
+              <span className="navbar-toggler-bar navbar-kebab"/>
             </button>
             <Collapse navbar isOpen={this.state.collapseOpen}>
               <Nav className="ml-auto" navbar>
-                {/*<InputGroup className="search-bar" tag="li">*/}
-                {/*  <Button*/}
-                {/*    color="link"*/}
-                {/*    data-target="#searchModal"*/}
-                {/*    data-toggle="modal"*/}
-                {/*    id="search-button"*/}
-                {/*    onClick={this.toggleModalSearch}*/}
-                {/*  >*/}
-                {/*    <i className="tim-icons icon-zoom-split" />*/}
-                {/*    <span className="d-lg-none d-md-block">Search</span>*/}
-                {/*  </Button>*/}
-                {/*</InputGroup>*/}
-                {/*<UncontrolledDropdown nav>*/}
-                {/*  <DropdownToggle*/}
-                {/*    caret*/}
-                {/*    color="default"*/}
-                {/*    data-toggle="dropdown"*/}
-                {/*    nav*/}
-                {/*  >*/}
-                {/*    <div className="notification d-none d-lg-block d-xl-block" />*/}
-                {/*    <i className="tim-icons icon-sound-wave" />*/}
-                {/*    <p className="d-lg-none">Notifications</p>*/}
-                {/*  </DropdownToggle>*/}
-                {/*  <DropdownMenu className="dropdown-navbar" right tag="ul">*/}
-                {/*    <NavLink tag="li">*/}
-                {/*      <DropdownItem className="nav-item">*/}
-                {/*        Mike John responded to your email*/}
-                {/*      </DropdownItem>*/}
-                {/*    </NavLink>*/}
-                {/*    <NavLink tag="li">*/}
-                {/*      <DropdownItem className="nav-item">*/}
-                {/*        You have 5 more tasks*/}
-                {/*      </DropdownItem>*/}
-                {/*    </NavLink>*/}
-                {/*    <NavLink tag="li">*/}
-                {/*      <DropdownItem className="nav-item">*/}
-                {/*        Your friend Michael is in town*/}
-                {/*      </DropdownItem>*/}
-                {/*    </NavLink>*/}
-                {/*    <NavLink tag="li">*/}
-                {/*      <DropdownItem className="nav-item">*/}
-                {/*        Another notification*/}
-                {/*      </DropdownItem>*/}
-                {/*    </NavLink>*/}
-                {/*    <NavLink tag="li">*/}
-                {/*      <DropdownItem className="nav-item">*/}
-                {/*        Another one*/}
-                {/*      </DropdownItem>*/}
-                {/*    </NavLink>*/}
-                {/*  </DropdownMenu>*/}
-                {/*</UncontrolledDropdown>*/}
                 <UncontrolledDropdown nav>
                   <DropdownToggle
                     caret
@@ -209,20 +170,13 @@ class AdminNavbar extends React.Component {
                     nav
                     onClick={e => e.preventDefault()}
                   >
-                    <div className="photo">
-                      <img alt="..." src={require("assets/img/mike.jpg")} />
-                    </div>
-                    <b className="caret d-none d-lg-block d-xl-block" />
+                    <Button color="link" style={{marginRight: 25}}>
+                      {email}
+                    </Button>
+                    <b className="caret d-none d-lg-block d-xl-block"/>
                     <p className="d-lg-none">Log out</p>
                   </DropdownToggle>
                   <DropdownMenu className="dropdown-navbar" right tag="ul">
-                    {/*<NavLink tag="li">*/}
-                    {/*  <DropdownItem className="nav-item">Profile</DropdownItem>*/}
-                    {/*</NavLink>*/}
-                    {/*<NavLink tag="li">*/}
-                    {/*  <DropdownItem className="nav-item">Settings</DropdownItem>*/}
-                    {/*</NavLink>*/}
-                    {/*<DropdownItem divider tag="li" />*/}
                     <NavLink tag="li">
                       <DropdownItem onClick={() => {
                         localStorage.removeItem("token")
@@ -231,7 +185,7 @@ class AdminNavbar extends React.Component {
                     </NavLink>
                   </DropdownMenu>
                 </UncontrolledDropdown>
-                <li className="separator d-lg-none" />
+                <li className="separator d-lg-none"/>
               </Nav>
             </Collapse>
           </Container>
@@ -242,7 +196,7 @@ class AdminNavbar extends React.Component {
           toggle={this.toggleModalSearch}
         >
           <div className="modal-header">
-            <Input id="inlineFormInputGroup" placeholder="SEARCH" type="text" />
+            <Input id="inlineFormInputGroup" placeholder="SEARCH" type="text"/>
             <button
               aria-label="Close"
               className="close"
@@ -250,7 +204,7 @@ class AdminNavbar extends React.Component {
               type="button"
               onClick={this.toggleModalSearch}
             >
-              <i className="tim-icons icon-simple-remove" />
+              <i className="tim-icons icon-simple-remove"/>
             </button>
           </div>
         </Modal>
