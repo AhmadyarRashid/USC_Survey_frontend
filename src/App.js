@@ -14,7 +14,9 @@ function App(){
     <Router history={hist}>
       <Switch>
         <Route path="/auth" render={props => <AuthLayout {...props} />} />
+        <Route path="/auth/login" render={props => <AuthLayout {...props} />} />
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
+        <Route path="/admin/dashboard" render={props => <AdminLayout {...props} />} />
         <Route path="/rtl" render={props => <RTLLayout {...props} />} />
         <Redirect from="/" to={isLoggedIn ? "/admin/dashboard" : "/auth/login"} />
       </Switch>
