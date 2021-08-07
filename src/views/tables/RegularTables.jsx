@@ -39,6 +39,10 @@ class RegularTables extends React.Component {
       })
   }
 
+  updateUserHandler = userId => {
+    this.props.history.push(`/admin/users/edit/${userId}`)
+  }
+
   render() {
     const {users} = this.state;
     const tableBodyData = users.map(user => ({
@@ -64,6 +68,7 @@ class RegularTables extends React.Component {
                 <CardBody>
                   {users.length > 0 ? <SortingTable
                     deleteUserHandler={this.deleteUserHandler}
+                    updateUserHandler={this.updateUserHandler}
                     thead={[
                       {text: "Name"},
                       {text: "phone No"},

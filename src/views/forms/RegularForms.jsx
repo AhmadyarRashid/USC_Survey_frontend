@@ -1,5 +1,4 @@
 import React from "react";
-
 // reactstrap components
 import {
   Button,
@@ -16,8 +15,9 @@ import {
   Col, Alert
 } from "reactstrap";
 import Multiselect from 'multiselect-react-dropdown';
+import Swal from 'sweetalert2'
 import {getAllHeadOffices, getZones, getRegions, getCities, getStores} from "../../api/area";
-import {createUser} from "../../api/user"
+import {createUser, getProfile, updateUser} from "../../api/user"
 
 class CreateUserComponent extends React.Component {
   constructor(props) {
@@ -50,10 +50,37 @@ class CreateUserComponent extends React.Component {
       selectedRegions: [],
       selectedCities: [],
       selectedStores: [],
+
+      isEdit: false,
+      selectedUserId: -1,
     }
   }
 
   componentDidMount() {
+    const splitPathName = this.props.location.pathname.split("/")
+    if (splitPathName.length > 4) {
+      this.setState({
+        isEdit: true,
+        selectedUserId: splitPathName[splitPathName.length - 1]
+      })
+      getProfile(splitPathName[splitPathName.length - 1])
+        .then(response => {
+          console.log("profile:", response)
+          const {isSuccess, payload} = response
+          if (isSuccess) {
+            const {currentUser: {name, address, phoneNo}} = payload
+            this.setState({
+              name,
+              // email: '',
+              phoneNo,
+              address,
+            })
+          }
+        })
+        .catch(error => {
+          console.log("profile error:", error)
+        })
+    }
     getAllHeadOffices()
       .then(response => {
         if (response.isSuccess) {
@@ -201,7 +228,7 @@ class CreateUserComponent extends React.Component {
     const {
       name, address, email, phoneNo, password, retypePassword,
       selectedHeadOffices, selectedZones, selectedRegions,
-      selectedCities, selectedStores,
+      selectedCities, selectedStores, isEdit, selectedUserId
     } = this.state;
 
     this.setState({
@@ -210,47 +237,74 @@ class CreateUserComponent extends React.Component {
       errorMsg: ""
     })
 
-    const data = {
-      name, address, phoneNo, email, password,
-      confirmPassword: retypePassword,
-      headOfficeIds: !selectedHeadOffices? null: selectedHeadOffices.toString(),
-      zoneIds: !selectedZones? null: selectedZones.toString(),
-      regionIds: !selectedRegions? null: selectedRegions.toString(),
-      cityIds: !selectedCities? null: selectedCities.toString(),
-      storeIds: !selectedStores? null: selectedStores.map(item => item.id).toString()
-    }
+    if (isEdit) {
+      const data = {
+        userId: selectedUserId,
+        name, address, phoneNo,
+        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.toString(),
+        zoneIds: !selectedZones ? null : selectedZones.toString(),
+        regionIds: !selectedRegions ? null : selectedRegions.toString(),
+        cityIds: !selectedCities ? null : selectedCities.toString(),
+        storeIds: !selectedStores ? null : selectedStores.map(item => item.id).toString()
+      }
 
-    if (!name || !email || !password || !retypePassword){
-      this.setState({
-        hasError: true,
-        isLoading: false,
-        errorMsg: "Some field are empty"
-      })
-    } else if (password !== retypePassword) {
-      this.setState({
-        hasError: true,
-        isLoading: false,
-        errorMsg: "Both password field are mis-matched"
-      })
-    } else {
-      createUser(data)
+      updateUser(data)
         .then(response => {
-          if (response.isSuccess){
-            alert("user created successfully")
-            this.setState({
-              isLoading: false,
-              hasError: false,
-              errorMsg: ""
-            })
-            this.onResetHandler()
-          }else {
-            this.setState({
-              hasError: true,
-              isLoading: false,
-              errorMsg: response.message
-            })
-          }
+          Swal.fire({
+            icon: 'success',
+            title: 'User Update Successfully'
+          })
+          this.props.history.push("/admin/users")
+        }).catch(error => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Something went wrong. please try again later.'
         })
+      })
+
+    } else {
+      const data = {
+        name, address, phoneNo, email, password,
+        confirmPassword: retypePassword,
+        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.toString(),
+        zoneIds: !selectedZones ? null : selectedZones.toString(),
+        regionIds: !selectedRegions ? null : selectedRegions.toString(),
+        cityIds: !selectedCities ? null : selectedCities.toString(),
+        storeIds: !selectedStores ? null : selectedStores.map(item => item.id).toString()
+      }
+
+      if (!name || !email || !password || !retypePassword) {
+        this.setState({
+          hasError: true,
+          isLoading: false,
+          errorMsg: "Some field are empty"
+        })
+      } else if (password !== retypePassword) {
+        this.setState({
+          hasError: true,
+          isLoading: false,
+          errorMsg: "Both password field are mis-matched"
+        })
+      } else {
+        createUser(data)
+          .then(response => {
+            if (response.isSuccess) {
+              alert("user created successfully")
+              this.setState({
+                isLoading: false,
+                hasError: false,
+                errorMsg: ""
+              })
+              this.onResetHandler()
+            } else {
+              this.setState({
+                hasError: true,
+                isLoading: false,
+                errorMsg: response.message
+              })
+            }
+          })
+      }
     }
   }
 
@@ -258,7 +312,7 @@ class CreateUserComponent extends React.Component {
     const {
       hasError, isLoading, errorMsg, headOfficeList, zoneList,
       regionList, cityList, storeList, name, phoneNo, address, email,
-      password, retypePassword
+      password, retypePassword, isEdit
     } = this.state
     return (
       <>
@@ -267,7 +321,7 @@ class CreateUserComponent extends React.Component {
             <Col md="12">
               <Card>
                 <CardHeader>
-                  <CardTitle tag="h4">Create New User</CardTitle>
+                  <CardTitle tag="h4">{isEdit ? "Edit User" : "Create New User"}</CardTitle>
                 </CardHeader>
                 <CardBody>
                   <Form className="form-horizontal">
@@ -284,7 +338,7 @@ class CreateUserComponent extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
+                    {!isEdit && <Row>
                       <Label sm="2">Email</Label>
                       <Col sm="10">
                         <FormGroup>
@@ -295,7 +349,7 @@ class CreateUserComponent extends React.Component {
                           />
                         </FormGroup>
                       </Col>
-                    </Row>
+                    </Row>}
                     <Row>
                       <Label sm="2">phone No</Label>
                       <Col className="checkbox-radios" sm="10">
@@ -400,37 +454,41 @@ class CreateUserComponent extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
-                      <Label sm="2">Password</Label>
-                      <Col sm="10">
-                        <FormGroup>
-                          <Input
-                            type="password"
-                            autoComplete="off"
-                            value={password}
-                            onChange={e => this.onInputChangeHandler("password", e.target.value)}
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Label sm="2">Password</Label>
-                      <Col sm="10">
-                        <FormGroup>
-                          <Input
-                            type="password"
-                            value={retypePassword}
-                            autoComplete="off"
-                            onChange={e => this.onInputChangeHandler("retypePassword", e.target.value)}
-                          />
-                        </FormGroup>
-                      </Col>
-                    </Row>
+                    {!isEdit && <React.Fragment>
+                      <Row>
+                        <Label sm="2">Password</Label>
+                        <Col sm="10">
+                          <FormGroup>
+                            <Input
+                              type="password"
+                              autoComplete="off"
+                              value={password}
+                              onChange={e => this.onInputChangeHandler("password", e.target.value)}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Label sm="2">Password</Label>
+                        <Col sm="10">
+                          <FormGroup>
+                            <Input
+                              type="password"
+                              value={retypePassword}
+                              autoComplete="off"
+                              onChange={e => this.onInputChangeHandler("retypePassword", e.target.value)}
+                            />
+                          </FormGroup>
+                        </Col>
+                      </Row>
+                    </React.Fragment>}
                   </Form>
                 </CardBody>
                 <CardFooter>
-                  <Button className="btn-fill" color="primary" onClick={() => this.onSaveCustomerHandler()}>
-                    {isLoading ? 'Loading...' : 'Create'}
+                  <Button className="btn-fill" color="primary" onClick={() => {
+                    this.onSaveCustomerHandler()
+                  }}>
+                    {isLoading ? 'Loading...' : isEdit ? 'Save' : 'Create'}
                   </Button>
                 </CardFooter>
               </Card>

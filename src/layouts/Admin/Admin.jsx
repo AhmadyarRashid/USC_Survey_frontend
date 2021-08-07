@@ -30,6 +30,7 @@ import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
 import routes from "routes.js";
 
 import logo from "assets/img/react-logo.png";
+import CreateUserComponent from "../../views/forms/RegularForms";
 
 var ps;
 
@@ -106,6 +107,7 @@ class Admin extends React.Component {
           <Route
             path={prop.layout + prop.path}
             component={prop.component}
+            exact={true}
             key={key}
           />
         );
@@ -210,7 +212,10 @@ class Admin extends React.Component {
             sidebarOpened={this.state.sidebarOpened}
             toggleSidebar={this.toggleSidebar}
           />
-          <Switch>{this.getRoutes(routes)}</Switch>
+          <Switch>
+            {this.getRoutes(routes)}
+            <Route path="/admin/users/edit/:id" exact={true} component={props => <CreateUserComponent {...props} {...this.props} />} />
+          </Switch>
           {// we don't want the Footer to be rendered on full screen maps page
           this.props.location.pathname.indexOf("full-screen-map") !==
           -1 ? null : (

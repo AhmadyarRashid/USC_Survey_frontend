@@ -34,3 +34,19 @@ export const deleteUser = id => {
       .catch(error => reject(error))
   })
 }
+
+export const getProfile = id => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/user/profile/${id}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
+
+export const updateUser = data => {
+  return new Promise((resolve, reject) => {
+    axios.put(`${baseEndPointUrl}/user/update`, data)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}

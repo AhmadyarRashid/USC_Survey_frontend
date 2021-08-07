@@ -69,7 +69,7 @@ class SortingTable extends React.Component {
 
   render() {
     const {bodyData, column} = this.state;
-    const {deleteUserHandler} = this.props;
+    const {deleteUserHandler, updateUserHandler} = this.props;
     return (
       <Table className="tablesorter" responsive>
         <thead className="text-primary">
@@ -125,7 +125,13 @@ class SortingTable extends React.Component {
                 );
               })}
               <td>
-                {/*<Button size="sm" variant="warning">Edit</Button>*/}
+                <Button
+                  onClick={() => {
+                    updateUserHandler(prop.data[6].text)
+                  }}
+                  size="sm"
+                  variant="danger"
+                >Edit</Button>
                 <Button
                   onClick={() => {
                     deleteUserHandler(prop.data[6].text)
