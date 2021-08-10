@@ -50,3 +50,11 @@ export const updateUser = data => {
       .catch(error => reject(error))
   })
 }
+
+export const getDashboardData = () => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/user/dashboard`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
