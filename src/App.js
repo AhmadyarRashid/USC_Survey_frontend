@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Redirect, Route, Router, Switch} from "react-router-dom";
 import AuthLayout from "./layouts/Auth/Auth";
 import AdminLayout from "./layouts/Admin/Admin";

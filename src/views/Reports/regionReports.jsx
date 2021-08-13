@@ -11,6 +11,7 @@ import {
   Pagination, PaginationItem, PaginationLink, FormGroup, Label, Input
 } from "reactstrap";
 import {getRegionReports, getAllRegion} from "../../api/area"
+import {statusColor} from "../../utils/constants"
 
 class RegionReportsPage extends Component {
   constructor(props) {
@@ -134,8 +135,10 @@ class RegionReportsPage extends Component {
                       <th className="text-center">#</th>
                       <th>Store Name</th>
                       <th>User Name</th>
-                      <th>Company</th>
-                      <th>Status</th>
+                      {/*<th>Company</th>*/}
+                      <th>PTCL Status</th>
+                      <th>ERP Status</th>
+                      <th>NRTC Status</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -146,15 +149,38 @@ class RegionReportsPage extends Component {
                         </td>
                         <td>{item.name}</td>
                         <td>{item.userName}</td>
-                        <td>{item.company}</td>
+                        {/*<td>{item.company}</td>*/}
                         <td>
                           <span style={{
                             alignItems: 'center',
-                            backgroundColor: item.isCompleted === "true" ? "lightgreen" : "#FFCCCB",
+                            backgroundColor: statusColor[!item.ptclStatus ? "pending": item.ptclStatus],
                             padding: 8,
-                            borderRadius: 4
+                            borderRadius: 4,
+                            cursor: "pointer"
                           }}>
-                            {item.isCompleted === "true" ? "Completed" : "Not Completed"}
+                            {!item.ptclStatus ? "pending": item.ptclStatus }
+                          </span>
+                        </td>
+                        <td>
+                          <span style={{
+                            alignItems: 'center',
+                            backgroundColor: statusColor[!item.erpStatus ? "pending": item.erpStatus],
+                            padding: 8,
+                            borderRadius: 4,
+                            cursor: "pointer"
+                          }}>
+                            {!item.erpStatus ? "pending": item.erpStatus }
+                          </span>
+                        </td>
+                        <td>
+                          <span style={{
+                            alignItems: 'center',
+                            backgroundColor: statusColor[!item.nrtcStatus ? "pending": item.nrtcStatus],
+                            padding: 8,
+                            borderRadius: 4,
+                            cursor: "pointer"
+                          }}>
+                            {!item.nrtcStatus ? "pending": item.nrtcStatus }
                           </span>
                         </td>
                       </tr>
