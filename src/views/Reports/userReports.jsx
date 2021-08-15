@@ -10,7 +10,8 @@ import {
   Table,
   Pagination, PaginationItem, PaginationLink, FormGroup, Label, Input
 } from "reactstrap";
-import {getUserReports, getAllUsers} from "../../api/area"
+import {getUserReports, getAllUsers, unlockUserStore} from "../../api/area"
+import Swal from 'sweetalert2'
 import {statusColor} from "../../utils/constants";
 
 class UserReportsPage extends Component {
@@ -59,18 +60,18 @@ class UserReportsPage extends Component {
         }}>
           <PaginationLink first/>
         </PaginationItem>}
-        {[0,1,2,3,4,5,6,7,8,9].map(item => (
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(item => (
           <PaginationItem onClick={() => {
             this.setState({
-              currentPage: Number(startPage*10 +item),
+              currentPage: Number(startPage * 10 + item),
             })
           }}>
             <PaginationLink>
-              {Number(startPage*10 +item) + 1}
+              {Number(startPage * 10 + item) + 1}
             </PaginationLink>
           </PaginationItem>
         ))}
-        {endPage > startPage+5 &&  <PaginationItem onClick={() => {
+        {endPage > startPage + 5 && <PaginationItem onClick={() => {
           this.setState(prevState => ({
             startPage: Number(prevState.startPage + 1)
           }))
@@ -134,45 +135,150 @@ class UserReportsPage extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {data.slice(currentPage*10, currentPage*10+10).map((item, index) => (
+                    {data.slice(currentPage * 10, currentPage * 10 + 10).map((item, index) => (
                       <tr>
                         <td className="text-center">
-                          {Number(currentPage*10 + (index + 1))}
+                          {Number(currentPage * 10 + (index + 1))}
                         </td>
                         <td>{item.name}</td>
                         <td>{item.userName}</td>
                         {/*<td>{item.company}</td>*/}
                         <td>
-                          <span style={{
-                            alignItems: 'center',
-                            backgroundColor: statusColor[!item.ptclStatus ? "pending": item.ptclStatus],
-                            padding: 8,
-                            borderRadius: 4,
-                            cursor: "pointer"
-                          }}>
-                            {!item.ptclStatus ? "pending": item.ptclStatus }
+                          <span
+                            onClick={() => {
+                              const {ptclStatus} = item;
+                              if (ptclStatus && (ptclStatus === "notCompleted" || ptclStatus === "completed")) {
+                                Swal.fire({
+                                  title: 'Are you sure to unlock it ?',
+                                  showCancelButton: true,
+                                  cancelButtonText: 'No',
+                                  confirmButtonText: `Yes`,
+                                  denyButtonText: `Don't save`,
+                                }).then((result) => {
+                                  /* Read more about isConfirmed, isDenied below */
+                                  if (result.isConfirmed) {
+                                    const {storeId, userId} = item;
+                                    unlockUserStore(storeId, userId, "ptcl")
+                                      .then(() => {
+                                        Swal.fire('Updated Successfully!', '', 'success')
+                                        getUserReports()
+                                          .then(response => {
+                                            const {payload} = response
+                                            this.setState({
+                                              data: payload,
+                                              endPage: Math.round(payload.length / 10)
+                                            })
+                                          })
+                                          .catch(error => {
+                                            console.log("error:", error)
+                                          })
+                                      }).catch(error => {
+                                      Swal.fire('Something went wrong', '', 'error')
+                                    })
+                                  }
+                                })
+                              }
+                            }}
+                            style={{
+                              alignItems: 'center',
+                              backgroundColor: statusColor[!item.ptclStatus ? "pending" : item.ptclStatus],
+                              padding: 8,
+                              borderRadius: 4,
+                              cursor: "pointer"
+                            }}>
+                            {!item.ptclStatus ? "pending" : item.ptclStatus}
                           </span>
                         </td>
                         <td>
-                          <span style={{
-                            alignItems: 'center',
-                            backgroundColor: statusColor[!item.erpStatus ? "pending": item.erpStatus],
-                            padding: 8,
-                            borderRadius: 4,
-                            cursor: "pointer"
-                          }}>
-                            {!item.erpStatus ? "pending": item.erpStatus }
+                          <span
+                            onClick={() => {
+                              const {erpStatus} = item;
+                              if (erpStatus && (erpStatus === "notCompleted" || erpStatus === "completed")) {
+                                Swal.fire({
+                                  title: 'Are you sure to unlock it ?',
+                                  showCancelButton: true,
+                                  cancelButtonText: 'No',
+                                  confirmButtonText: `Yes`,
+                                  denyButtonText: `Don't save`,
+                                }).then((result) => {
+                                  /* Read more about isConfirmed, isDenied below */
+                                  if (result.isConfirmed) {
+                                    const {storeId, userId} = item;
+                                    unlockUserStore(storeId, userId, "erp")
+                                      .then(() => {
+                                        Swal.fire('Updated Successfully!', '', 'success')
+                                        getUserReports()
+                                          .then(response => {
+                                            const {payload} = response
+                                            this.setState({
+                                              data: payload,
+                                              endPage: Math.round(payload.length / 10)
+                                            })
+                                          })
+                                          .catch(error => {
+                                            console.log("error:", error)
+                                          })
+                                      }).catch(error => {
+                                      Swal.fire('Something went wrong', '', 'error')
+                                    })
+                                  }
+                                })
+                              }
+                            }}
+                            style={{
+                              alignItems: 'center',
+                              backgroundColor: statusColor[!item.erpStatus ? "pending" : item.erpStatus],
+                              padding: 8,
+                              borderRadius: 4,
+                              cursor: "pointer"
+                            }}>
+                            {!item.erpStatus ? "pending" : item.erpStatus}
                           </span>
                         </td>
                         <td>
-                          <span style={{
-                            alignItems: 'center',
-                            backgroundColor: statusColor[!item.nrtcStatus ? "pending": item.nrtcStatus],
-                            padding: 8,
-                            borderRadius: 4,
-                            cursor: "pointer"
-                          }}>
-                            {!item.nrtcStatus ? "pending": item.nrtcStatus }
+                          <span
+                            onClick={() => {
+                              const {nrtcStatus} = item;
+                              if (nrtcStatus && (nrtcStatus === "notCompleted" || nrtcStatus === "completed")) {
+                                Swal.fire({
+                                  title: 'Are you sure to unlock it ?',
+                                  showCancelButton: true,
+                                  cancelButtonText: 'No',
+                                  confirmButtonText: `Yes`,
+                                  denyButtonText: `Don't save`,
+                                }).then((result) => {
+                                  /* Read more about isConfirmed, isDenied below */
+                                  if (result.isConfirmed) {
+                                    const {storeId, userId} = item;
+                                    unlockUserStore(storeId, userId, "nrtc")
+                                      .then(() => {
+                                        Swal.fire('Updated Successfully!', '', 'success')
+                                        getUserReports()
+                                          .then(response => {
+                                            const {payload} = response
+                                            this.setState({
+                                              data: payload,
+                                              endPage: Math.round(payload.length / 10)
+                                            })
+                                          })
+                                          .catch(error => {
+                                            console.log("error:", error)
+                                          })
+                                      }).catch(error => {
+                                      Swal.fire('Something went wrong', '', 'error')
+                                    })
+                                  }
+                                })
+                              }
+                            }}
+                            style={{
+                              alignItems: 'center',
+                              backgroundColor: statusColor[!item.nrtcStatus ? "pending" : item.nrtcStatus],
+                              padding: 8,
+                              borderRadius: 4,
+                              cursor: "pointer"
+                            }}>
+                            {!item.nrtcStatus ? "pending" : item.nrtcStatus}
                           </span>
                         </td>
                       </tr>

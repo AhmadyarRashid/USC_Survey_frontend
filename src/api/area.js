@@ -72,3 +72,11 @@ export const getAllUsers = () => {
       .catch(error => reject(error))
   })
 }
+
+export const unlockUserStore = (storeId, userId, company) => {
+  return new Promise((resolve, reject) => {
+    axios.put(`${baseEndPointUrl}/area/storeUnlock?storeId=${storeId}&userId=${userId}&company=${company}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
