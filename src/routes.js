@@ -29,6 +29,7 @@ import Rtl from "views/pages/Rtl.jsx";
 import Lock from "views/pages/Lock.jsx";
 import UserReportsPage from "./views/Reports/userReports";
 import RegionReportsPage from "./views/Reports/regionReports";
+// import StoresPage from "./views/Stores";
 
 const routes = [
   {
@@ -39,6 +40,14 @@ const routes = [
     component: Dashboard,
     layout: "/admin"
   },
+  // {
+  //   path: "/ourStores",
+  //   name: "Stores",
+  //   rtlName: "لوحة القيادة",
+  //   icon: "tim-icons icon-cart",
+  //   component: StoresPage,
+  //   layout: "/admin"
+  // },
   {
     collapse: true,
     name: "Reports",

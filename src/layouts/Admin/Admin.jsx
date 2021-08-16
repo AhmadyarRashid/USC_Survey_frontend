@@ -31,6 +31,7 @@ import routes from "routes.js";
 
 import logo from "assets/img/react-logo.png";
 import CreateUserComponent from "../../views/forms/RegularForms";
+import UserReportDetails from "../../views/Reports/userReportDetails";
 
 var ps;
 
@@ -215,6 +216,7 @@ class Admin extends React.Component {
           <Switch>
             {this.getRoutes(routes)}
             <Route path="/admin/users/edit/:id" exact={true} component={props => <CreateUserComponent {...props} {...this.props} />} />
+            <Route path="/admin/userReport/detail/:id" exact={true} component={props => <UserReportDetails {...props} {...this.props} />} />
           </Switch>
           {// we don't want the Footer to be rendered on full screen maps page
           this.props.location.pathname.indexOf("full-screen-map") !==

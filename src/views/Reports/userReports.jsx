@@ -1,6 +1,5 @@
 import React, {Component} from "react"
 import {
-  Button,
   Card,
   CardBody,
   CardHeader,
@@ -13,6 +12,7 @@ import {
 import {getUserReports, getAllUsers, unlockUserStore} from "../../api/area"
 import Swal from 'sweetalert2'
 import {statusColor} from "../../utils/constants";
+import {Link} from "react-router-dom";
 
 class UserReportsPage extends Component {
   constructor(props) {
@@ -101,8 +101,7 @@ class UserReportsPage extends Component {
   render() {
     const {data, startPage, currentPage, users} = this.state;
     return (
-      <React.Fragment>
-        <div className="content">
+      <div className="content">
           <Row>
             <Col className="mb-5" md="12">
               <Card>
@@ -128,10 +127,10 @@ class UserReportsPage extends Component {
                       <th className="text-center">#</th>
                       <th>Store Name</th>
                       <th>User Name</th>
-                      {/*<th>Company</th>*/}
                       <th>PTCL Status</th>
                       <th>ERP Status</th>
                       <th>NRTC Status</th>
+                      <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -281,6 +280,7 @@ class UserReportsPage extends Component {
                             {!item.nrtcStatus ? "pending" : item.nrtcStatus}
                           </span>
                         </td>
+                        <td><Link to={`/admin/userReport/detail/${item.id}`}>View Details</Link></td>
                       </tr>
                     ))}
                     </tbody>
@@ -291,7 +291,6 @@ class UserReportsPage extends Component {
             </Col>
           </Row>
         </div>
-      </React.Fragment>
     )
   }
 }

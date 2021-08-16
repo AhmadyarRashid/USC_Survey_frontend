@@ -58,3 +58,11 @@ export const getDashboardData = () => {
       .catch(error => reject(error))
   })
 }
+
+export const userReportDetails = id => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/user/userReportDetails/${id}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
