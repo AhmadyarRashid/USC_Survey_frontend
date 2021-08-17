@@ -13,10 +13,14 @@ function App(){
   return(
     <Router history={hist}>
       <Switch>
+        <Route path="/auth/login" exact render={props => <AuthLayout {...props} />} />
         <Route path="/auth" render={props => <AuthLayout {...props} />} />
-        <Route path="/auth/login" render={props => <AuthLayout {...props} />} />
+        <Route path="/admin/dashboard" exact render={props => <AdminLayout {...props} />} />
+        <Route path="/admin/userReports" exact render={props => <AdminLayout {...props} />} />
+        <Route path="/admin/regionReports" exact render={props => <AdminLayout {...props} />} />
+        <Route path="/admin/users" exact render={props => <AdminLayout {...props} />} />
+        <Route path="/admin/create" exact render={props => <AdminLayout {...props} />} />
         <Route path="/admin" render={props => <AdminLayout {...props} />} />
-        <Route path="/admin/dashboard" render={props => <AdminLayout {...props} />} />
         <Route path="/rtl" render={props => <RTLLayout {...props} />} />
         <Redirect from="/" to={isLoggedIn ? "/admin/dashboard" : "/auth/login"} />
       </Switch>

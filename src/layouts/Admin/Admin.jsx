@@ -22,14 +22,12 @@ import PerfectScrollbar from "perfect-scrollbar";
 import NotificationAlert from "react-notification-alert";
 
 // core components
-import AdminNavbar from "components/Navbars/AdminNavbar.jsx";
-import Footer from "components/Footer/Footer.jsx";
-import Sidebar from "components/Sidebar/Sidebar.jsx";
-import FixedPlugin from "components/FixedPlugin/FixedPlugin.jsx";
+import AdminNavbar from "../../components/Navbars/AdminNavbar.jsx";
+import Footer from "../../components/Footer/Footer.jsx";
+import Sidebar from "../../components/Sidebar/Sidebar.jsx";
+import FixedPlugin from "../../components/FixedPlugin/FixedPlugin.jsx";
 
-import routes from "routes.js";
-
-import logo from "assets/img/react-logo.png";
+import routes from "../../routes.js";
 import CreateUserComponent from "../../views/forms/RegularForms";
 import UserReportDetails from "../../views/Reports/userReportDetails";
 
