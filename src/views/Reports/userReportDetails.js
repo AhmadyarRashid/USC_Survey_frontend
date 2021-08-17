@@ -70,12 +70,22 @@ class UserReportDetails extends React.Component{
                     </thead>
                     <tbody>`
                 product.data.forEach((item, index) => {
-                  renderData += `<tr>
+                  if (!item.status){
+                    renderData += `<tr>
                     <td>${index+1}</td>
                     <td>${item.name}</td>
                     <td>${item.description}</td>
-                    <td>${item.remarks}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
+                    </tr>`
+                  }else {
+                    renderData += `<tr style="background-color:#f8d7da">
+                    <td>${index+1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.description}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
                   </tr>`
+                  }
+
                 })
                 renderData += `</tbody></Table></React.Fragment>`
 
@@ -103,12 +113,21 @@ class UserReportDetails extends React.Component{
                     </thead>
                     <tbody>`
                 product.data.forEach((item, index) => {
-                  renderData += `<tr>
+                  if (!item.status){
+                    renderData += `<tr>
                     <td>${index+1}</td>
                     <td>${item.name}</td>
                     <td>${item.description}</td>
-                    <td>${item.remarks}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
                   </tr>`
+                  }else {
+                    renderData += `<tr style="background-color:#f8d7da">
+                    <td>${index+1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.description}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
+                  </tr>`
+                  }
                 })
                 renderData += `</tbody></Table></React.Fragment>`
 
@@ -136,12 +155,21 @@ class UserReportDetails extends React.Component{
                     </thead>
                     <tbody>`
                 product.data.forEach((item, index) => {
-                  renderData += `<tr>
+                  if (!item.status){
+                    renderData += `<tr>
                     <td>${index+1}</td>
                     <td>${item.name}</td>
                     <td>${item.description}</td>
-                    <td>${item.remarks}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
                   </tr>`
+                  }else {
+                    renderData += `<tr style="background-color:#f8d7da">
+                    <td>${index+1}</td>
+                    <td>${item.name}</td>
+                    <td>${item.description}</td>
+                    <td>${!item.remarks ? '' : item.remarks}</td>
+                  </tr>`
+                  }
                 })
                 renderData += `</tbody></Table></React.Fragment>`
 
