@@ -80,3 +80,11 @@ export const unlockUserStore = (storeId, userId, company) => {
       .catch(error => reject(error))
   })
 }
+
+export const getAllRegionStores = regionId => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/getAllRegionStores/${regionId}`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}

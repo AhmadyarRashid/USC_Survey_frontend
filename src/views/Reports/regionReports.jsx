@@ -10,8 +10,9 @@ import {
   Table,
   Pagination, PaginationItem, PaginationLink, FormGroup, Label, Input
 } from "reactstrap";
-import {getRegionReports, getAllRegion} from "../../api/area"
+import {getRegionReports, getAllRegion, getAllRegionStores} from "../../api/area"
 import {statusColor} from "../../utils/constants"
+import ExportReports from "./exportReports";
 
 class RegionReportsPage extends Component {
   constructor(props) {
@@ -22,7 +23,9 @@ class RegionReportsPage extends Component {
       startPage: 0,
       endPage: 5,
       currentPage: 0,
-      regions: []
+      regions: [],
+      exportState: 'pending',
+      allRegionStores: []
     }
   }
 
@@ -95,7 +98,7 @@ class RegionReportsPage extends Component {
         const {payload, isSuccess} = response
         this.setState({
           data: payload,
-          endPage: Math.round(payload.length / 5),
+          endPage: Math.round(payload.length / 10),
           startPage: 0,
           currentPage: 0,
         })
@@ -103,10 +106,19 @@ class RegionReportsPage extends Component {
       .catch(error => {
         console.log("error:", error)
       })
+
+    getAllRegionStores(regionId)
+      .then(response => {
+        const {payload = {}, isSuccess} = response
+        const {storesPayload = []} = payload
+        this.setState({
+          allRegionStores: storesPayload
+        })
+      })
   }
 
   render() {
-    const {data, currentPage, regions} = this.state;
+    const {data, currentPage, regions, exportState, allRegionStores} = this.state;
     return (
       <React.Fragment>
         <div className="content">
@@ -117,25 +129,43 @@ class RegionReportsPage extends Component {
                   <CardTitle tag="h4">Region Reports</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  {regions.length > 0 && (
-                    <FormGroup style={{marginBottom: 18, width: "40%"}}>
-                      <Label for="exampleSelect">Select Regions</Label>
-                      <Input type="select" onChange={(event) => {
-                        console.log("select change", event.target.value)
-                        this.onSelectRegionHandler(event.target.value)
+                  <div style={{display:'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                    {regions.length > 0 && (
+                      <FormGroup style={{marginBottom: 18, width: "40%"}}>
+                        <Label for="exampleSelect">Select Regions</Label>
+                        <Input type="select" onChange={(event) => {
+                          console.log("select change", event.target.value)
+                          this.onSelectRegionHandler(event.target.value)
+                        }} name="select" id="exampleSelect">
+                          <option value={-1}>All</option>
+                          {regions.map(item => <option value={item.id}>{item.name}</option>)}
+                        </Input>
+                      </FormGroup>
+                    )}
+                    <FormGroup style={{marginBottom: 18, width: "40%", display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                      <Label for="exampleSelect" style={{marginRight: 8}}>Category</Label>
+                      <Input type="select" onChange={event => {
+                        this.setState({
+                          exportState: event.target.value
+                        })
                       }} name="select" id="exampleSelect">
-                        <option value={-1}>All</option>
-                        {regions.map(item => <option value={item.id}>{item.name}</option>)}
+                        <option value={'pending'}>Pending</option>
+                        <option value={'completed'}>Completed</option>
+                        <option value={'notCompleted'}>Not Completed</option>
                       </Input>
+
+                      <ExportReports
+                        reportStatus={exportState}
+                        data={allRegionStores}
+                      />
                     </FormGroup>
-                  )}
+                  </div>
                   <Table responsive>
                     <thead className="text-primary">
                     <tr>
                       <th className="text-center">#</th>
                       <th>Store Name</th>
                       <th>User Name</th>
-                      {/*<th>Company</th>*/}
                       <th>PTCL Status</th>
                       <th>ERP Status</th>
                       <th>NRTC Status</th>
@@ -149,7 +179,6 @@ class RegionReportsPage extends Component {
                         </td>
                         <td>{item.name}</td>
                         <td>{item.userName}</td>
-                        {/*<td>{item.company}</td>*/}
                         <td>
                           <span style={{
                             alignItems: 'center',
