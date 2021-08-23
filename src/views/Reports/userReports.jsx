@@ -13,6 +13,9 @@ import {getUserReports, getAllUsers, unlockUserStore} from "../../api/area"
 import Swal from 'sweetalert2'
 import {statusColor} from "../../utils/constants";
 import {Link} from "react-router-dom";
+import ExportReports from "./exportReports";
+
+let allStores = []
 
 class UserReportsPage extends Component {
   constructor(props) {
@@ -22,7 +25,8 @@ class UserReportsPage extends Component {
       startPage: 0,
       endPage: 5,
       currentPage: 0,
-      users: []
+      users: [],
+      exportState: 'all'
     }
   }
 
@@ -30,6 +34,7 @@ class UserReportsPage extends Component {
     getUserReports()
       .then(response => {
         const {payload} = response
+        allStores = payload
         this.setState({
           data: payload,
           endPage: Math.round(payload.length / 10)
@@ -42,8 +47,16 @@ class UserReportsPage extends Component {
     getAllUsers()
       .then(response => {
         const {payload} = response
+        const templateRegionData = payload.map(item => ({
+          cat: '1',
+          name: item.name,
+          id: item.id,
+        }))
+        const sortedUserList = templateRegionData.sort(function(a, b) {
+          return a.name.localeCompare(b.name);
+        })
         this.setState({
-          users: payload
+          users: sortedUserList
         })
       })
   }
@@ -86,11 +99,13 @@ class UserReportsPage extends Component {
     getUserReports(userId)
       .then(response => {
         const {payload} = response
+        allStores = payload
         this.setState({
           data: payload,
           endPage: Math.round(payload.length / 10),
           startPage: 0,
           currentPage: 0,
+          exportState: 'all'
         })
       })
       .catch(error => {
@@ -98,8 +113,40 @@ class UserReportsPage extends Component {
       })
   }
 
+  onCategoryChangeHandler = category => {
+    let filteredData = []
+    if (category === 'all'){
+      filteredData = allStores
+    } else if (category === 'pending'){
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === null || ptclStatus === null ||
+          nrtcStatus === null || erpStatus === 'pending' || ptclStatus === 'pending' ||
+          nrtcStatus === 'pending'
+      )
+    } else if (category === 'completed'){
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === 'completed' && ptclStatus === 'completed' && nrtcStatus === 'completed'
+      )
+    } else if (category === 'notCompleted') {
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === 'notCompleted' || ptclStatus === 'notCompleted' ||
+          nrtcStatus === 'notCompleted' || erpStatus === null || ptclStatus === null ||
+          nrtcStatus === null || erpStatus === 'pending' || ptclStatus === 'pending' ||
+          nrtcStatus === 'pending'
+      )
+    }
+
+    this.setState({
+      data: filteredData,
+      exportState: category
+    })
+  }
+
   render() {
-    const {data, startPage, currentPage, users} = this.state;
+    const {data, startPage, currentPage, users, exportState} = this.state;
     return (
       <div className="content">
           <Row>
@@ -109,18 +156,37 @@ class UserReportsPage extends Component {
                   <CardTitle tag="h4">Users Reports</CardTitle>
                 </CardHeader>
                 <CardBody>
-                  {users.length > 0 && (
-                    <FormGroup style={{marginBottom: 18, width: "40%"}}>
-                      <Label for="exampleSelect">Select Users</Label>
-                      <Input type="select" onChange={(event) => {
-                        console.log("select change", event.target.value)
-                        this.onSelectUserHandler(event.target.value)
-                      }} name="select" id="userSelect">
-                        <option value={-1}>All</option>
-                        {users.map(item => <option value={item.id}>{item.name}</option>)}
+                  <div style={{display:'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                    {users.length > 0 && (
+                      <FormGroup style={{marginBottom: 18, width: "40%"}}>
+                        <Label for="exampleSelect">Select Users</Label>
+                        <Input type="select" onChange={(event) => {
+                          console.log("select change", event.target.value)
+                          this.onSelectUserHandler(event.target.value)
+                        }} name="select" id="userSelect">
+                          <option value={-1}>All</option>
+                          {users.map(item => <option value={item.id}>{item.name}</option>)}
+                        </Input>
+                      </FormGroup>
+                    )}
+
+                    <FormGroup style={{marginBottom: 18, width: "40%", display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
+                      <Label for="exampleSelect" style={{marginRight: 8}}>Category</Label>
+                      <Input type="select" value={exportState} onChange={event => {
+                        this.onCategoryChangeHandler(event.target.value)
+                      }} name="select" id="exampleSelect">
+                        <option value='all'>All</option>
+                        <option value='pending'>Pending</option>
+                        <option value='completed'>Completed</option>
+                        <option value='notCompleted'>Not Completed</option>
                       </Input>
+
+                      <ExportReports
+                        reportStatus={exportState}
+                        data={data}
+                      />
                     </FormGroup>
-                  )}
+                  </div>
                   <Table responsive>
                     <thead className="text-primary">
                     <tr>
@@ -165,7 +231,8 @@ class UserReportsPage extends Component {
                                             const {payload} = response
                                             this.setState({
                                               data: payload,
-                                              endPage: Math.round(payload.length / 10)
+                                              endPage: Math.round(payload.length / 10),
+                                              exportState: 'all',
                                             })
                                           })
                                           .catch(error => {

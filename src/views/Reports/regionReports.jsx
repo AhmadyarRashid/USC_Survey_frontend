@@ -121,7 +121,9 @@ class RegionReportsPage extends Component {
     } else if (category === 'pending'){
       filteredData = allStores.filter(
         ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
-          erpStatus === null || ptclStatus === null || nrtcStatus === null
+          erpStatus === null || ptclStatus === null ||
+          nrtcStatus === null || erpStatus === 'pending' || ptclStatus === 'pending' ||
+          nrtcStatus === 'pending'
       )
     } else if (category === 'completed'){
       filteredData = allStores.filter(
@@ -133,7 +135,8 @@ class RegionReportsPage extends Component {
         ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
           erpStatus === 'notCompleted' || ptclStatus === 'notCompleted' ||
           nrtcStatus === 'notCompleted' || erpStatus === null || ptclStatus === null ||
-          nrtcStatus === null
+          nrtcStatus === null || erpStatus === 'pending' || ptclStatus === 'pending' ||
+          nrtcStatus === 'pending'
       )
     }
 
