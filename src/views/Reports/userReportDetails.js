@@ -30,14 +30,14 @@ class UserReportDetails extends React.Component{
             })
           }else {
             this.setState({
-              error: 'Something went wrong'
+              error: 'No data found. It will display data when user submit any report.'
             })
           }
         })
         .catch(error => {
           console.log("user reports details error", error)
           this.setState({
-            error: 'Something went wrong'
+            error: 'No data found. It will display data when user submit any report.'
           })
         })
     }
@@ -51,7 +51,7 @@ class UserReportDetails extends React.Component{
         <Row>
           <Link to="/admin/userReports">{"<<"} back to User Reports</Link>
         </Row>
-        {error &&  <Alert color="danger">{error}</Alert>}
+        {error &&  <Alert color="info">{error}</Alert>}
         <Row style={{marginTop: 12}}>
           <Card>
             <CardHeader>PTCL</CardHeader>
