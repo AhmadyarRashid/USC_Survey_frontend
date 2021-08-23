@@ -14,6 +14,8 @@ import {getRegionReports, getAllRegion, getAllRegionStores} from "../../api/area
 import {statusColor} from "../../utils/constants"
 import ExportReports from "./exportReports";
 
+let allStores = []
+
 class RegionReportsPage extends Component {
   constructor(props) {
     super(props);
@@ -24,8 +26,7 @@ class RegionReportsPage extends Component {
       endPage: 5,
       currentPage: 0,
       regions: [],
-      exportState: 'pending',
-      allRegionStores: []
+      exportState: 'all',
     }
   }
 
@@ -33,9 +34,10 @@ class RegionReportsPage extends Component {
     getRegionReports()
       .then(response => {
         const {payload, isSuccess} = response
+        allStores = payload;
         this.setState({
           data: payload,
-          endPage: Math.round(payload.length / 5)
+          endPage: Math.round(payload.length / 10)
         })
       })
       .catch(error => {
@@ -45,12 +47,17 @@ class RegionReportsPage extends Component {
     getAllRegion()
       .then(response => {
         const {payload} = response
+        // define proper templete
+        const templateRegionData = payload.map(item => ({
+          cat: '1',
+          name: item.name,
+          id: item.id,
+        }))
+        const sortedRegionList = templateRegionData.sort(function(a, b) {
+          return a.name.localeCompare(b.name);
+        })
         this.setState({
-          regions: payload.map(item => ({
-            cat: '1',
-            name: item.name,
-            id: item.id,
-          }))
+          regions: sortedRegionList
         })
       })
       .catch(error => {
@@ -93,32 +100,51 @@ class RegionReportsPage extends Component {
   }
 
   onSelectRegionHandler = (regionId) => {
-    getRegionReports(regionId)
+    getAllRegionStores(regionId)
       .then(response => {
-        const {payload, isSuccess} = response
+        const {payload = []} = response
+        allStores = payload;
         this.setState({
           data: payload,
+          exportState: 'all',
           endPage: Math.round(payload.length / 10),
           startPage: 0,
           currentPage: 0,
         })
       })
-      .catch(error => {
-        console.log("error:", error)
-      })
+  }
 
-    getAllRegionStores(regionId)
-      .then(response => {
-        const {payload = {}, isSuccess} = response
-        const {storesPayload = []} = payload
-        this.setState({
-          allRegionStores: storesPayload
-        })
-      })
+  onCategoryChangeHandler = category => {
+    let filteredData = []
+    if (category === 'all'){
+      filteredData = allStores
+    } else if (category === 'pending'){
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === null || ptclStatus === null || nrtcStatus === null
+      )
+    } else if (category === 'completed'){
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === 'completed' && ptclStatus === 'completed' && nrtcStatus === 'completed'
+      )
+    } else if (category === 'notCompleted') {
+      filteredData = allStores.filter(
+        ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
+          erpStatus === 'notCompleted' || ptclStatus === 'notCompleted' ||
+          nrtcStatus === 'notCompleted' || erpStatus === null || ptclStatus === null ||
+          nrtcStatus === null
+      )
+    }
+
+    this.setState({
+      data: filteredData,
+      exportState: category
+    })
   }
 
   render() {
-    const {data, currentPage, regions, exportState, allRegionStores} = this.state;
+    const {data, currentPage, regions, exportState} = this.state;
     return (
       <React.Fragment>
         <div className="content">
@@ -144,19 +170,18 @@ class RegionReportsPage extends Component {
                     )}
                     <FormGroup style={{marginBottom: 18, width: "40%", display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
                       <Label for="exampleSelect" style={{marginRight: 8}}>Category</Label>
-                      <Input type="select" onChange={event => {
-                        this.setState({
-                          exportState: event.target.value
-                        })
+                      <Input type="select" value={exportState} onChange={event => {
+                        this.onCategoryChangeHandler(event.target.value)
                       }} name="select" id="exampleSelect">
-                        <option value={'pending'}>Pending</option>
-                        <option value={'completed'}>Completed</option>
-                        <option value={'notCompleted'}>Not Completed</option>
+                        <option value='all'>All</option>
+                        <option value='pending'>Pending</option>
+                        <option value='completed'>Completed</option>
+                        <option value='notCompleted'>Not Completed</option>
                       </Input>
 
                       <ExportReports
                         reportStatus={exportState}
-                        data={allRegionStores}
+                        data={data}
                       />
                     </FormGroup>
                   </div>
