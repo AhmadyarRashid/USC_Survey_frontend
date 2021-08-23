@@ -30,14 +30,14 @@ class UserReportDetails extends React.Component{
             })
           }else {
             this.setState({
-              error: 'No data found. It will display data when user submit any report.'
+              error: 'No data found, data will be displayed once submitted by the user!'
             })
           }
         })
         .catch(error => {
           console.log("user reports details error", error)
           this.setState({
-            error: 'No data found. It will display data when user submit any report.'
+            error: 'No data found, data will be displayed once submitted by the user!'
           })
         })
     }
