@@ -187,7 +187,7 @@ class CreateUserComponent extends React.Component {
               selectedCities: item.map(i => i.id),
               storeList: payload.map(item => ({
                 cat: '1',
-                name: item.name,
+                name: item.name + ", " + item.address,
                 id: item.id,
               }))
             })
