@@ -159,12 +159,20 @@ class CreateUserComponent extends React.Component {
             const {payload} = response
             this.setState({
               selectedRegions: item.map(i => i.id),
-              cityList: payload.map(item => ({
+              storeList: payload.map(item => ({
                 cat: '1',
-                name: item.name,
+                name: item.name + ", " + item.address,
                 id: item.id,
               }))
             })
+            // this.setState({
+            //   selectedRegions: item.map(i => i.id),
+            //   cityList: payload.map(item => ({
+            //     cat: '1',
+            //     name: item.name,
+            //     id: item.id,
+            //   }))
+            // })
           }
         })
     } else {
@@ -423,7 +431,7 @@ class CreateUserComponent extends React.Component {
                         </FormGroup>
                       </Col>
                     </Row>
-                    <Row>
+                    <Row style={{display: 'none'}}>
                       <Label sm="2">Cities</Label>
                       <Col sm="10">
                         <FormGroup>
