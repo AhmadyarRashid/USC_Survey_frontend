@@ -68,19 +68,27 @@ class CreateUserComponent extends React.Component {
           console.log("profile:", response)
           const {isSuccess, payload} = response
           if (isSuccess) {
-            const {currentUser: {name, address, phoneNo}} = payload
+            const {currentUser: {name, address, phoneNo, storesDetail, zonesDetail, regionsDetail}} = payload
             this.setState({
               name,
               // email: '',
               phoneNo,
-              address,
+              address
             })
+            this.onHeadOfficeSelectHandler([{
+              cat: '1',
+              name: 'Islamabad',
+              id: 1,
+            }])
+            this.onZoneSelectHandler(zonesDetail)
+            this.onRegionSelectHandler(regionsDetail, true, storesDetail)
           }
         })
         .catch(error => {
           console.log("profile error:", error)
         })
     }
+
     getAllHeadOffices()
       .then(response => {
         if (response.isSuccess) {
@@ -103,12 +111,12 @@ class CreateUserComponent extends React.Component {
           if (response.isSuccess) {
             const {payload} = response
             this.setState({
-              selectedHeadOffices: item.map(i => i.id),
+              selectedHeadOffices: item,
               zoneList: payload.map(item => ({
                 cat: '1',
                 name: item.name,
                 id: item.id,
-              }))
+              })),
             })
           }
         })
@@ -131,12 +139,12 @@ class CreateUserComponent extends React.Component {
           if (response.isSuccess) {
             const {payload} = response
             this.setState({
-              selectedZones: item.map(i => i.id),
+              selectedZones: item,
               regionList: payload.map(item => ({
                 cat: '1',
                 name: item.name,
                 id: item.id,
-              }))
+              })),
             })
           }
         })
@@ -151,28 +159,24 @@ class CreateUserComponent extends React.Component {
     }
   }
 
-  onRegionSelectHandler = (item) => {
+  onRegionSelectHandler = (item, isEdit = false, selectedStoreIds = []) => {
     if (item.length > 0) {
       getCities(item[0].id)
         .then(response => {
           if (response.isSuccess) {
             const {payload} = response
             this.setState({
-              selectedRegions: item.map(i => i.id),
+              selectedRegions: item,
               storeList: payload.map(item => ({
                 cat: '1',
                 name: item.name + ", " + item.address,
                 id: item.id,
               }))
+            }, () => {
+              this.setState({
+                selectedStores: selectedStoreIds
+              })
             })
-            // this.setState({
-            //   selectedRegions: item.map(i => i.id),
-            //   cityList: payload.map(item => ({
-            //     cat: '1',
-            //     name: item.name,
-            //     id: item.id,
-            //   }))
-            // })
           }
         })
     } else {
@@ -249,10 +253,10 @@ class CreateUserComponent extends React.Component {
       const data = {
         userId: selectedUserId,
         name, address, phoneNo,
-        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.toString(),
-        zoneIds: !selectedZones ? null : selectedZones.toString(),
-        regionIds: !selectedRegions ? null : selectedRegions.toString(),
-        cityIds: !selectedCities ? null : selectedCities.toString(),
+        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.map(item => item.id).toString(),
+        zoneIds: !selectedZones ? null : selectedZones.map(item => item.id).toString(),
+        regionIds: !selectedRegions ? null : selectedRegions.map(item => item.id).toString(),
+        cityIds: !selectedCities ? null : selectedCities.map(item => item.id).toString(),
         storeIds: !selectedStores ? null : selectedStores.map(item => item.id).toString()
       }
 
@@ -274,10 +278,10 @@ class CreateUserComponent extends React.Component {
       const data = {
         name, address, phoneNo, email, password,
         confirmPassword: retypePassword,
-        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.toString(),
-        zoneIds: !selectedZones ? null : selectedZones.toString(),
-        regionIds: !selectedRegions ? null : selectedRegions.toString(),
-        cityIds: !selectedCities ? null : selectedCities.toString(),
+        headOfficeIds: !selectedHeadOffices ? null : selectedHeadOffices.map(item => item.id).toString(),
+        zoneIds: !selectedZones ? null : selectedZones.map(item => item.id).toString(),
+        regionIds: !selectedRegions ? null : selectedRegions.map(item => item.id).toString(),
+        cityIds: !selectedCities ? null : selectedCities.map(item => item.id).toString(),
         storeIds: !selectedStores ? null : selectedStores.map(item => item.id).toString()
       }
 
@@ -320,7 +324,8 @@ class CreateUserComponent extends React.Component {
     const {
       hasError, isLoading, errorMsg, headOfficeList, zoneList,
       regionList, cityList, storeList, name, phoneNo, address, email,
-      password, retypePassword, isEdit
+      password, retypePassword, isEdit, selectedStores, selectedHeadOffices,
+      selectedZones, selectedRegions
     } = this.state
     return (
       <>
@@ -390,6 +395,7 @@ class CreateUserComponent extends React.Component {
                           <Multiselect
                             displayValue="name"
                             ref={this.headOfficeRef}
+                            selectedValues={selectedHeadOffices}
                             onRemove={item => this.onHeadOfficeSelectHandler(item)}
                             onSelect={item => this.onHeadOfficeSelectHandler(item)}
                             options={headOfficeList}
@@ -406,6 +412,7 @@ class CreateUserComponent extends React.Component {
                           <Multiselect
                             displayValue="name"
                             ref={this.zoneRef}
+                            selectedValues={selectedZones}
                             onRemove={item => this.onZoneSelectHandler(item)}
                             onSelect={item => this.onZoneSelectHandler(item)}
                             options={zoneList}
@@ -422,6 +429,7 @@ class CreateUserComponent extends React.Component {
                           <Multiselect
                             displayValue="name"
                             ref={this.regionRef}
+                            selectedValues={selectedRegions}
                             onRemove={item => this.onRegionSelectHandler(item)}
                             onSelect={item => this.onRegionSelectHandler(item)}
                             options={regionList}
@@ -454,6 +462,7 @@ class CreateUserComponent extends React.Component {
                           <Multiselect
                             displayValue="name"
                             ref={this.storeRef}
+                            selectedValues={selectedStores}
                             onRemove={items => this.setState({selectedStores: items})}
                             onSelect={items => this.setState({selectedStores: items})}
                             options={storeList}
