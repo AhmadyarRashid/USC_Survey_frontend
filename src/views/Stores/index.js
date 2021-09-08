@@ -83,9 +83,6 @@ class StoresPage extends React.Component{
                 defaultPageSize={10}
               />
             </CardBody>
-            <CardFooter>
-              <p align="center">pagination</p>
-            </CardFooter>
           </Card>
         </Row>
       </div>
