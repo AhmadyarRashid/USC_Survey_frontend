@@ -88,3 +88,11 @@ export const getAllRegionStores = regionId => {
       .catch(error => reject(error))
   })
 }
+
+export const getAllAssignStores = () => {
+  return new Promise((resolve, reject) => {
+    axios.get(`${baseEndPointUrl}/area/getAllAssignStores`)
+      .then(response => resolve(response.data))
+      .catch(error => reject(error))
+  })
+}
