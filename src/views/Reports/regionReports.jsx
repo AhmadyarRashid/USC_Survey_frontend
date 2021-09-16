@@ -148,6 +148,22 @@ class RegionReportsPage extends Component {
 
   render() {
     const {data, currentPage, regions, exportState} = this.state;
+
+    // PTCL summary calculation
+    const ptclPending = data.filter(item => !item.ptclStatus || item.ptclStatus === 'pending');
+    const ptclCompleted = data.filter(item => item.ptclStatus === 'completed');
+    const ptclNotCompleted = data.filter(item => item.ptclStatus === 'notCompleted');
+
+    // ERP summary calculation
+    const erpPending = data.filter(item => !item.erpStatus || item.erpStatus === 'pending');
+    const erpCompleted = data.filter(item => item.erpStatus === 'completed');
+    const erpNotCompleted = data.filter(item => item.erpStatus === 'notCompleted');
+
+    // NRTC summary calculation
+    const nrtcPending = data.filter(item => !item.nrtcStatus || item.nrtcStatus === 'pending');
+    const nrtcCompleted = data.filter(item => item.nrtcStatus === 'completed');
+    const nrtcNotCompleted = data.filter(item => item.nrtcStatus === 'notCompleted');
+
     return (
       <React.Fragment>
         <div className="content">
@@ -188,6 +204,38 @@ class RegionReportsPage extends Component {
                       />
                     </FormGroup>
                   </div>
+                  <h3>Summary</h3>
+                  <Table responsive>
+                    <thead className="text-primary">
+                    <tr>
+                      <th className="text-center">#</th>
+                      <th>Pending</th>
+                      <th>Completed</th>
+                      <th>Not Completed</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                      <td className="text-center"><b>PTCL</b></td>
+                      <td>{ptclPending.length}</td>
+                      <td>{ptclCompleted.length}</td>
+                      <td>{ptclNotCompleted.length}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-center"><b>ERP</b></td>
+                      <td>{erpPending.length}</td>
+                      <td>{erpCompleted.length}</td>
+                      <td>{erpNotCompleted.length}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-center"><b>NRTC</b></td>
+                      <td>{nrtcPending.length}</td>
+                      <td>{nrtcCompleted.length}</td>
+                      <td>{nrtcNotCompleted.length}</td>
+                    </tr>
+                    </tbody>
+                  </Table>
+                  <h3>Details</h3>
                   <Table responsive>
                     <thead className="text-primary">
                     <tr>

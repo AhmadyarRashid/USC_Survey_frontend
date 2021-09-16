@@ -52,7 +52,7 @@ class UserReportsPage extends Component {
           name: item.name,
           id: item.id,
         }))
-        const sortedUserList = templateRegionData.sort(function(a, b) {
+        const sortedUserList = templateRegionData.sort(function (a, b) {
           return a.name.localeCompare(b.name);
         })
         this.setState({
@@ -115,16 +115,16 @@ class UserReportsPage extends Component {
 
   onCategoryChangeHandler = category => {
     let filteredData = []
-    if (category === 'all'){
+    if (category === 'all') {
       filteredData = allStores
-    } else if (category === 'pending'){
+    } else if (category === 'pending') {
       filteredData = allStores.filter(
         ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
           erpStatus === null || ptclStatus === null ||
           nrtcStatus === null || erpStatus === 'pending' || ptclStatus === 'pending' ||
           nrtcStatus === 'pending'
       )
-    } else if (category === 'completed'){
+    } else if (category === 'completed') {
       filteredData = allStores.filter(
         ({erpStatus, nrtcStatus, ptclStatus, ...store}) =>
           erpStatus === 'completed' && ptclStatus === 'completed' && nrtcStatus === 'completed'
@@ -147,68 +147,121 @@ class UserReportsPage extends Component {
 
   render() {
     const {data, startPage, currentPage, users, exportState} = this.state;
+
+    // PTCL summary calculation
+    const ptclPending = data.filter(item => !item.ptclStatus || item.ptclStatus === 'pending');
+    const ptclCompleted = data.filter(item => item.ptclStatus === 'completed');
+    const ptclNotCompleted = data.filter(item => item.ptclStatus === 'notCompleted');
+
+    // ERP summary calculation
+    const erpPending = data.filter(item => !item.erpStatus || item.erpStatus === 'pending');
+    const erpCompleted = data.filter(item => item.erpStatus === 'completed');
+    const erpNotCompleted = data.filter(item => item.erpStatus === 'notCompleted');
+
+    // NRTC summary calculation
+    const nrtcPending = data.filter(item => !item.nrtcStatus || item.nrtcStatus === 'pending');
+    const nrtcCompleted = data.filter(item => item.nrtcStatus === 'completed');
+    const nrtcNotCompleted = data.filter(item => item.nrtcStatus === 'notCompleted');
+
     return (
       <div className="content">
-          <Row>
-            <Col className="mb-5" md="12">
-              <Card>
-                <CardHeader>
-                  <CardTitle tag="h4">Users Reports</CardTitle>
-                </CardHeader>
-                <CardBody>
-                  <div style={{display:'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
-                    {users.length > 0 && (
-                      <FormGroup style={{marginBottom: 18, width: "40%"}}>
-                        <Label for="exampleSelect">Select Users</Label>
-                        <Input type="select" onChange={(event) => {
-                          console.log("select change", event.target.value)
-                          this.onSelectUserHandler(event.target.value)
-                        }} name="select" id="userSelect">
-                          <option value={-1}>All</option>
-                          {users.map(item => <option value={item.id}>{item.name}</option>)}
-                        </Input>
-                      </FormGroup>
-                    )}
-
-                    <FormGroup style={{marginBottom: 18, width: "40%", display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-                      <Label for="exampleSelect" style={{marginRight: 8}}>Category</Label>
-                      <Input type="select" value={exportState} onChange={event => {
-                        this.onCategoryChangeHandler(event.target.value)
-                      }} name="select" id="exampleSelect">
-                        <option value='all'>All</option>
-                        <option value='pending'>Pending</option>
-                        <option value='completed'>Completed</option>
-                        <option value='notCompleted'>Not Completed</option>
+        <Row>
+          <Col className="mb-5" md="12">
+            <Card>
+              <CardHeader>
+                <CardTitle tag="h4">Users Reports</CardTitle>
+              </CardHeader>
+              <CardBody>
+                <div style={{display: 'flex', flexDirection: 'row', justifyContent: 'space-between'}}>
+                  {users.length > 0 && (
+                    <FormGroup style={{marginBottom: 18, width: "40%"}}>
+                      <Label for="exampleSelect">Select Users</Label>
+                      <Input type="select" onChange={(event) => {
+                        console.log("select change", event.target.value)
+                        this.onSelectUserHandler(event.target.value)
+                      }} name="select" id="userSelect">
+                        <option value={-1}>All</option>
+                        {users.map(item => <option value={item.id}>{item.name}</option>)}
                       </Input>
-
-                      <ExportReports
-                        reportStatus={exportState}
-                        data={data}
-                      />
                     </FormGroup>
-                  </div>
-                  <Table responsive>
-                    <thead className="text-primary">
+                  )}
+
+                  <FormGroup style={{
+                    marginBottom: 18,
+                    width: "40%",
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center'
+                  }}>
+                    <Label for="exampleSelect" style={{marginRight: 8}}>Category</Label>
+                    <Input type="select" value={exportState} onChange={event => {
+                      this.onCategoryChangeHandler(event.target.value)
+                    }} name="select" id="exampleSelect">
+                      <option value='all'>All</option>
+                      <option value='pending'>Pending</option>
+                      <option value='completed'>Completed</option>
+                      <option value='notCompleted'>Not Completed</option>
+                    </Input>
+
+                    <ExportReports
+                      reportStatus={exportState}
+                      data={data}
+                    />
+                  </FormGroup>
+                </div>
+                <h3>Summary</h3>
+                <Table responsive>
+                  <thead className="text-primary">
+                  <tr>
+                    <th className="text-center">#</th>
+                    <th>Pending</th>
+                    <th>Completed</th>
+                    <th>Not Completed</th>
+                  </tr>
+                  </thead>
+                  <tbody>
                     <tr>
-                      <th className="text-center">#</th>
-                      <th>Store Name</th>
-                      <th>User Name</th>
-                      <th>PTCL Status</th>
-                      <th>ERP Status</th>
-                      <th>NRTC Status</th>
-                      <th>Actions</th>
+                      <td className="text-center"><b>PTCL</b></td>
+                      <td>{ptclPending.length}</td>
+                      <td>{ptclCompleted.length}</td>
+                      <td>{ptclNotCompleted.length}</td>
                     </tr>
-                    </thead>
-                    <tbody>
-                    {data.slice(currentPage * 10, currentPage * 10 + 10).map((item, index) => (
-                      <tr>
-                        <td className="text-center">
-                          {Number(currentPage * 10 + (index + 1))}
-                        </td>
-                        <td>{item.name}</td>
-                        <td>{item.userName}</td>
-                        {/*<td>{item.company}</td>*/}
-                        <td>
+                    <tr>
+                      <td className="text-center"><b>ERP</b></td>
+                      <td>{erpPending.length}</td>
+                      <td>{erpCompleted.length}</td>
+                      <td>{erpNotCompleted.length}</td>
+                    </tr>
+                    <tr>
+                      <td className="text-center"><b>NRTC</b></td>
+                      <td>{nrtcPending.length}</td>
+                      <td>{nrtcCompleted.length}</td>
+                      <td>{nrtcNotCompleted.length}</td>
+                    </tr>
+                  </tbody>
+                </Table>
+                <h3>Details</h3>
+                <Table responsive>
+                  <thead className="text-primary">
+                  <tr>
+                    <th className="text-center">#</th>
+                    <th>Store Name</th>
+                    <th>User Name</th>
+                    <th>PTCL Status</th>
+                    <th>ERP Status</th>
+                    <th>NRTC Status</th>
+                    <th>Actions</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  {data.slice(currentPage * 10, currentPage * 10 + 10).map((item, index) => (
+                    <tr>
+                      <td className="text-center">
+                        {Number(currentPage * 10 + (index + 1))}
+                      </td>
+                      <td>{item.name}</td>
+                      <td>{item.userName}</td>
+                      <td>
                           <span
                             onClick={() => {
                               const {ptclStatus} = item;
@@ -254,8 +307,8 @@ class UserReportsPage extends Component {
                             }}>
                             {!item.ptclStatus ? "pending" : item.ptclStatus}
                           </span>
-                        </td>
-                        <td>
+                      </td>
+                      <td>
                           <span
                             onClick={() => {
                               const {erpStatus} = item;
@@ -300,8 +353,8 @@ class UserReportsPage extends Component {
                             }}>
                             {!item.erpStatus ? "pending" : item.erpStatus}
                           </span>
-                        </td>
-                        <td>
+                      </td>
+                      <td>
                           <span
                             onClick={() => {
                               const {nrtcStatus} = item;
@@ -346,18 +399,18 @@ class UserReportsPage extends Component {
                             }}>
                             {!item.nrtcStatus ? "pending" : item.nrtcStatus}
                           </span>
-                        </td>
-                        <td><Link to={`/admin/userReport/detail/${item.id}`}>View Details</Link></td>
-                      </tr>
-                    ))}
-                    </tbody>
-                  </Table>
-                  {this.renderPagination()}
-                </CardBody>
-              </Card>
-            </Col>
-          </Row>
-        </div>
+                      </td>
+                      <td><Link to={`/admin/userReport/detail/${item.id}`}>View Details</Link></td>
+                    </tr>
+                  ))}
+                  </tbody>
+                </Table>
+                {this.renderPagination()}
+              </CardBody>
+            </Card>
+          </Col>
+        </Row>
+      </div>
     )
   }
 }
